@@ -1,9 +1,14 @@
 import { Button, Menu as AntMenu } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import React from 'react'
+import { observer } from 'mobx-react-lite'
 import styles from './style.less'
+import { LEAGUES } from '../../enums'
+import store from '../../store/store'
 
-const Menu = ({
+const LEAGUES_NAMES = Object.keys(LEAGUES)
+
+const Menu = observer(({
   collapsed,
   setCollapsed,
 }) => (
@@ -16,23 +21,22 @@ const Menu = ({
       {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
     </Button>
     <AntMenu
-      defaultSelectedKeys={['1']}
-      defaultOpenKeys={['sub1']}
+      defaultSelectedKeys={[LEAGUES_NAMES[0]]}
       mode="inline"
       theme="dark"
       inlineCollapsed={collapsed}
+      onSelect={item => {
+        store.setActiveLeagueId(LEAGUES[item.key])
+        setCollapsed(true)
+      }}
     >
-      <AntMenu.Item key="1">
-        Option 1
-      </AntMenu.Item>
-      <AntMenu.Item key="2">
-        Option 2
-      </AntMenu.Item>
-      <AntMenu.Item key="3">
-        Option 3
-      </AntMenu.Item>
+      {LEAGUES_NAMES.map(league => (
+        <AntMenu.Item key={league}>
+          {league}
+        </AntMenu.Item>
+      ))}
     </AntMenu>
   </div>
-)
+))
 
 export default Menu
