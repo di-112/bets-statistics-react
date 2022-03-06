@@ -1,0 +1,40 @@
+@import './variables';
+
+:global {
+  body, html, #root {
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .ant-spin-nested-loading,
+  .ant-spin-container,
+  .ant-spin {
+    height: calc(100vh - @header-height - @footer-height) !important;
+    max-height: calc(100vh - @header-height - @footer-height) !important;
+  }
+
+  .ant-menu-item:first-child{
+    margin-top: 0;
+  }
+
+  .ant-table-cell{
+    padding: 0 !important;
+  }
+
+  .ant-menu-root{
+    height: calc(100vh - @header-height - @footer-height) !important;
+  }
+
+  .ant-menu.ant-menu-inline-collapsed {
+    width: 0 !important;
+  }
+
+  .ant-menu-inline-collapsed-noicon{
+    display: none;
+  }
+}
+
+.app {
+  height: 100%
+}
