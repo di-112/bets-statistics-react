@@ -1,33 +1,31 @@
 import React from 'react'
-import { Select, Table as AntTable } from 'antd'
+import { DatePicker, Table as AntTable } from 'antd'
 import { observer } from 'mobx-react-lite'
 import store from '../../../../store/store'
 import styles from './style.less'
-import { BETS } from '../../../../enums'
-
-const { Option } = Select
+import { BETS, DATE_FORMAT, RESULTS } from '../../../../enums'
+import Select from '../Select'
 
 const Table = observer(({ dataSource }) => {
-  console.log('store.teams: ', store.teams)
-
   const columns = [
+    {
+      title: 'Дата',
+      dataIndex: 'date',
+      align: 'center',
+      width: '20%',
+      render: (text, record) => (record.isNew
+        ? <DatePicker format={DATE_FORMAT} />
+        : text),
+    },
     {
       title: 'Матч',
       dataIndex: 'home',
       colSpan: 2,
       width: '20%',
       align: 'center',
-      render: () => (
-        <Select style={{ width: '100%' }} allowClear>
-          {store.teams.map(({ team }) => (
-            <Option value={team.name}>
-              <img src={team.logo} alt={team.name} style={{ width: 20, height: 20 }} />
-              {' '}
-              {team.name}
-            </Option>
-          ))}
-        </Select>
-      ),
+      render: (text, record) => (record.isNew
+        ? <Select options={store.teams} />
+        : text),
     },
     {
       title: 'Матч',
@@ -35,41 +33,32 @@ const Table = observer(({ dataSource }) => {
       width: '20%',
       colSpan: 0,
       align: 'center',
-      render: () => (
-        <Select style={{ width: '100%' }} allowClear>
-          {store.teams.map(({ team }) => (
-            <Option value={team.name}>
-              <img src={team.logo} alt={team.name} style={{ width: 20, height: 20 }} />
-              {' '}
-              {team.name}
-            </Option>
-          ))}
-        </Select>
-      ),
+      render: (text, record) => (record.isNew
+        ? <Select options={store.teams} />
+        : text),
     },
     {
       title: 'Ставка',
       dataIndex: 'bet',
+      width: '10%',
       align: 'center',
-      render: () => (
-        <Select style={{ width: '100%' }} allowClear>
-          {BETS.map(bet => (
-            <Option value={bet}>
-              {bet}
-            </Option>
-          ))}
-        </Select>
-      ),
+      render: (text, record) => (record.isNew
+        ? <Select options={BETS} />
+        : text),
     },
     {
       title: 'Сумма',
       dataIndex: 'sum',
+      width: '15%',
       align: 'center',
     },
     {
       title: 'Исход',
       dataIndex: 'result',
       align: 'center',
+      render: (text, record) => (record.isNew
+        ? <Select options={Object.values(RESULTS)} />
+        : text),
     },
   ]
 

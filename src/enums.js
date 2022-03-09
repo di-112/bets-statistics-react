@@ -4,6 +4,8 @@ export const LEAGUES = {
   'Серия А': 137,
 }
 
+export const DATE_FORMAT = 'DD.MM.YYYY'
+
 export const BETS = [
   'П1',
   'П2',
@@ -19,3 +21,8 @@ export const BETS = [
   'Ф1(-1)',
   'Ф2(-1)',
 ]
+
+export const RESULTS = {
+  win: 'Выигрыш',
+  loose: 'Проигрыш',
+}
