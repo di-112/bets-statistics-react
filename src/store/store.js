@@ -16,7 +16,6 @@ class Store {
       activeLeagueId: observable,
       teams: observable,
       bets: observable,
-      setActiveLeagueId: action,
       addBet: action,
       onSave: action,
       isDisableSaveButton: computed,
@@ -42,6 +41,7 @@ class Store {
       ...bet,
       isNew: false,
     }))
+    console.log('this.bets: ', this.bets)
   }
 
   addBet = () => {
@@ -55,6 +55,11 @@ class Store {
       result: '',
       isNew: true,
     }]
+  }
+
+  changeBet = (key, field, data) => {
+    const bet = this.bets.find(bet => bet.key === key)
+    bet[field] = data
   }
 
   get isDisableSaveButton() {
