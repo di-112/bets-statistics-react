@@ -12,8 +12,8 @@ export const getColumns = () => [
     align: 'center',
     width: '20%',
     render: (date, record) => (record.isNew
-      ? <DatePicker onChange={value => store.changeBet(record.key, 'date', value)} format={DATE_FORMAT} />
-      : date.format(DATE_FORMAT)),
+      ? <DatePicker onChange={value => store.changeBet(record.key, 'date', value.format(DATE_FORMAT))} format={DATE_FORMAT} />
+      : date),
   },
   {
     title: 'Матч',
@@ -38,7 +38,17 @@ export const getColumns = () => [
     colSpan: 0,
     align: 'center',
     render: (text, record) => (record.isNew
-      ? <Select onChange={value => store.changeBet(record.key, 'visit', store.teams.find(team => team.name === value))} options={store.teams} />
+      ? (
+        <Select
+          onChange={value => store
+            .changeBet(
+              record.key,
+              'visit',
+              store.teams.find(team => team.name === value),
+            )}
+          options={store.teams}
+        />
+      )
       : record.visit && <TeamCell record={record} field="visit" />),
   },
   {

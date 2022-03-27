@@ -3,6 +3,7 @@ import {
 } from 'mobx'
 import { LEAGUES } from '../enums'
 import api from '../api'
+import localStorageService from '../localStorage/localStorageService'
 
 class Store {
   activeLeagueId = LEAGUES[0]
@@ -24,6 +25,7 @@ class Store {
     runInAction(async () => {
       const data = await api.getTeamsOfLeague(this.activeLeagueId)
       this.teams = data.map(({ team }) => team)
+      this.bets = localStorageService.get()
     })
 
     reaction(() => this.activeLeagueId, async () => {
@@ -41,7 +43,7 @@ class Store {
       ...bet,
       isNew: false,
     }))
-    console.log('this.bets: ', this.bets)
+    localStorageService.put(this.bets)
   }
 
   addBet = () => {

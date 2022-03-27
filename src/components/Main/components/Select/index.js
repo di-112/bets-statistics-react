@@ -14,8 +14,16 @@ const Select = ({ options = [], onChange = () => {} }) => (
         )
         : (
           <Option value={option?.name} key={option?.name}>
-            {option?.logo && <img src={option?.logo} alt={option.name} style={{ width: 20, height: 20 }} /> }
-            {option?.name || ''}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {option?.logo && (
+              <img
+                src={option?.logo}
+                alt={option.name}
+                style={{ width: 20, height: 20, marginRight: 10 }}
+              />
+              ) }
+              {option?.name || ''}
+            </div>
           </Option>
         )
     ))}

@@ -1,11 +1,16 @@
 @import "../../variables";
 
 .menu {
- position: absolute;
+  position: absolute;
   left: 0;
   top: 0;
   z-index: 10;
-  .collapseButton{
+
+  :global(.ant-menu-inline-collapsed){
+    display: none;
+  }
+
+  .collapseButton {
     height: @header-height;
     margin-bottom: 0 !important;
     border: none !important;
