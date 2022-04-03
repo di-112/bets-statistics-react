@@ -1,21 +1,21 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import style from './style.less'
 
-const TeamCell = ({ record, field }) => {
-  console.log('record, field: ', record, field)
+const TeamCell = ({ record, field }) => (
+  <div className={style.cell}>
+    <img
+      className={style.logo}
+      src={record[field].logo}
+      alt={record[field].name}
+    />
+    {record[field].name}
+  </div>
+)
 
-  return (
-    <div className={style.cell}>
-      <img
-        src={record[field].logo}
-        alt={record[field].name}
-        style={{
-          width: 20, height: 20, marginRight: 10, padding: '0 11px',
-        }}
-      />
-      {record[field].name}
-    </div>
-  )
+TeamCell.propTypes = {
+  record: PropTypes.object,
+  field: PropTypes.string,
 }
 
 export default TeamCell
