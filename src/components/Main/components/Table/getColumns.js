@@ -1,4 +1,4 @@
-import { DatePicker } from 'antd'
+import { DatePicker, Input } from 'antd'
 import React from 'react'
 import { BETS, DATE_FORMAT, RESULTS } from '../../../../enums'
 import Select from '../Select'
@@ -77,6 +77,7 @@ export const getColumns = (teams, changeBet) => [
     dataIndex: 'sum',
     width: '15%',
     align: 'center',
+    render: (text, record) => (record.isNew ? <Input defaultValue={text} /> : text),
   },
   {
     title: 'Исход',

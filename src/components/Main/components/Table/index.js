@@ -6,14 +6,19 @@ import styles from './style.less'
 import { getColumns } from './getColumns'
 import { useStore } from '../../../../store/provider'
 
-const Table = observer(() => {
+const Table = observer(({ setSelected }) => {
   const { bets, teams, changeBet } = useStore()
 
   const columns = useMemo(() => getColumns(teams, changeBet), [teams, changeBet])
 
+  const rowSelection = {
+    onChange: setSelected,
+  }
+
   return (
     <AntTable
       className={styles.table}
+      rowSelection={rowSelection}
       dataSource={bets}
       columns={columns}
       size="small"

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Spin } from 'antd'
 import classnames from 'classnames/bind'
 import { observer } from 'mobx-react-lite'
@@ -11,15 +11,19 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 const cn = classnames.bind(styles)
 
-const MainContent = observer(({ isOpenMenu }) => (
-  <Spin indicator={antIcon} spinning={false}>
-    <div className={cn('main', { blur: isOpenMenu })}>
-      <div className={styles.wrapper}>
-        <Toolbar />
-        <Table />
+const MainContent = observer(({ isOpenMenu }) => {
+  const [selected, setSelected] = useState([])
+
+  return (
+    <Spin indicator={antIcon} spinning={false}>
+      <div className={cn('main', { blur: isOpenMenu })}>
+        <div className={styles.wrapper}>
+          <Toolbar selected={selected} />
+          <Table setSelected={setSelected} />
+        </div>
       </div>
-    </div>
-  </Spin>
-))
+    </Spin>
+  )
+})
 
 export default MainContent

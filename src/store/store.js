@@ -12,14 +12,17 @@ class Store {
 
   bets = []
 
+  isUnsaved = false
+
   constructor() {
     makeObservable(this, {
       activeLeagueId: observable,
+      isUnsaved: observable,
       teams: observable,
       bets: observable,
       addBet: action,
       onSave: action,
-      isDisableSaveButton: computed,
+      setIsUnsaved: action,
     })
 
     runInAction(async () => {
@@ -34,6 +37,10 @@ class Store {
     })
   }
 
+  setIsUnsaved = bool => {
+    this.isUnsaved = bool
+  }
+
   setActiveLeagueId = id => {
     this.activeLeagueId = id
   }
@@ -43,6 +50,7 @@ class Store {
       ...bet,
       isNew: false,
     }))
+    this.isUnsaved = false
     localStorageService.put(this.bets)
   }
 
@@ -57,17 +65,22 @@ class Store {
       result: '',
       isNew: true,
     }]
+    this.isUnsaved = true
   }
 
   changeBet = (key, field, data) => {
     const bet = this.bets.find(bet => bet.key === key)
-    console.log('data: ', data)
     bet[field] = data
   }
 
-  get isDisableSaveButton() {
-    return !this.bets.filter(bet => bet.isNew).length
+  deleteBets = keys => {
+    this.bets = this.bets.filter(bet => !keys.includes(bet.key))
+    this.isUnsaved = true
   }
+
+  /* get isDisableSaveButton() {
+    return !this.bets.filter(bet => bet.isNew).length
+  } */
 }
 
 export default new Store()

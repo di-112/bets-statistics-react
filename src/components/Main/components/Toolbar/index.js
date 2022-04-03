@@ -5,8 +5,10 @@ import { observer } from 'mobx-react-lite'
 import { useStore } from '../../../../store/provider'
 import styles from './style.less'
 
-const Toolbar = observer(() => {
-  const { addBet, onSave, isDisableSaveButton } = useStore()
+const Toolbar = observer(({ selected }) => {
+  const {
+    addBet, onSave, deleteBets, isUnsaved,
+  } = useStore()
 
   return (
     <div className={styles.toolbar}>
@@ -18,11 +20,13 @@ const Toolbar = observer(() => {
       <Button
         type="danger"
         icon={(<DeleteOutlined style={{ fontSize: 13 }} />)}
+        disabled={!selected.length}
+        onClick={() => deleteBets(selected)}
       />
       <Button
         type="primary "
         onClick={onSave}
-        disabled={isDisableSaveButton}
+        disabled={!isUnsaved}
         icon={<SaveOutlined style={{ fontSize: 13 }} />}
       />
     </div>
