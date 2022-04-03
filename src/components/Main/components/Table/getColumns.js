@@ -1,18 +1,18 @@
 import { DatePicker } from 'antd'
 import React from 'react'
-import store from '../../../../store/store'
 import { BETS, DATE_FORMAT, RESULTS } from '../../../../enums'
 import Select from '../Select'
 import TeamCell from './components/TeamCell'
+import ResultCell from './components/ResultCell'
 
-export const getColumns = () => [
+export const getColumns = (teams, changeBet) => [
   {
     title: 'Дата',
     dataIndex: 'date',
     align: 'center',
     width: '20%',
     render: (date, record) => (record.isNew
-      ? <DatePicker onChange={value => store.changeBet(record.key, 'date', value.format(DATE_FORMAT))} format={DATE_FORMAT} />
+      ? <DatePicker onChange={value => changeBet(record.key, 'date', value.format(DATE_FORMAT))} format={DATE_FORMAT} />
       : date),
   },
   {
@@ -24,8 +24,8 @@ export const getColumns = () => [
     render: (text, record) => (record.isNew
       ? (
         <Select
-          options={store.teams}
-          onChange={value => store.changeBet(record.key, 'home', store.teams.find(team => team.name === value))}
+          options={teams}
+          onChange={value => changeBet(record.key, 'home', teams.find(team => team.name === value))}
         />
       )
       : (
@@ -40,13 +40,12 @@ export const getColumns = () => [
     render: (text, record) => (record.isNew
       ? (
         <Select
-          onChange={value => store
-            .changeBet(
-              record.key,
-              'visit',
-              store.teams.find(team => team.name === value),
-            )}
-          options={store.teams}
+          onChange={value => changeBet(
+            record.key,
+            'visit',
+            teams.find(team => team.name === value),
+          )}
+          options={teams}
         />
       )
       : record.visit && <TeamCell record={record} field="visit" />),
@@ -56,9 +55,22 @@ export const getColumns = () => [
     dataIndex: 'bet',
     width: '10%',
     align: 'center',
-    render: (text, record) => (record.isNew
-      ? <Select options={BETS} />
-      : text),
+    render: (text, record) => {
+      console.log('test: ', text)
+      console.log('bet: ', record)
+      return (record.isNew
+        ? (
+          <Select
+            options={BETS}
+            onChange={value => changeBet(
+              record.key,
+              'bet',
+              value,
+            )}
+          />
+        )
+        : record.bet)
+    },
   },
   {
     title: 'Сумма',
@@ -71,7 +83,16 @@ export const getColumns = () => [
     dataIndex: 'result',
     align: 'center',
     render: (text, record) => (record.isNew
-      ? <Select options={Object.values(RESULTS)} />
-      : text),
+      ? (
+        <Select
+          options={Object.values(RESULTS)}
+          onChange={value => changeBet(
+            record.key,
+            'result',
+            value,
+          )}
+        />
+      )
+      : <ResultCell result={record.result} />),
   },
 ]

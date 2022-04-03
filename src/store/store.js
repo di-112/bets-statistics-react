@@ -61,6 +61,7 @@ class Store {
 
   changeBet = (key, field, data) => {
     const bet = this.bets.find(bet => bet.key === key)
+    console.log('data: ', data)
     bet[field] = data
   }
 
@@ -69,6 +70,4 @@ class Store {
   }
 }
 
-const store = new Store()
-
-export default store
+export default new Store()

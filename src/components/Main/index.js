@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 import { LoadingOutlined } from '@ant-design/icons'
 import Toolbar from './components/Toolbar'
 import Table from './components/Table'
-import store from '../../store/store'
 import styles from './style.less'
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
@@ -17,7 +16,7 @@ const MainContent = observer(({ isOpenMenu }) => (
     <div className={cn('main', { blur: isOpenMenu })}>
       <div className={styles.wrapper}>
         <Toolbar />
-        <Table dataSource={store.bets} />
+        <Table />
       </div>
     </div>
   </Spin>
