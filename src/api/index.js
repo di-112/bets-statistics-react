@@ -13,9 +13,10 @@ class Api {
     })
   }
 
-  getLeague = (id = 39) => this.axiosBase(`/leagues?id=${id}`).then(res => res.data?.response)
+  getLeague = (id = 39) => this.axiosBase(`/leagues?id=${id}`).then(res => res.data.response)
 
-  getTeamsOfLeague = (leagueId = 39) => this.axiosBase(`/teams?league=${leagueId}&season=2021`).then(res => res.data?.response)
+  getTeamsOfLeague = (leagueId = 39) => this.axiosBase(`/teams?league=${leagueId}&season=2021`)
+    .then(res => res.data.response.map(({ team }) => team))
 }
 
 const api = new Api()

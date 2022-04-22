@@ -1,16 +1,17 @@
 import {
-  action, computed, makeObservable, observable, reaction, runInAction,
+  action, makeObservable, observable, reaction, runInAction,
 } from 'mobx'
 import { LEAGUES } from '../enums'
 import api from '../api'
 import localStorageService from '../localStorage/localStorageService'
+import { IBet, ITeam } from '../types'
 
 class Store {
-  activeLeagueId = LEAGUES[0]
+  activeLeagueId: number = LEAGUES[0]
 
-  teams = []
+  teams : ITeam[] = []
 
-  bets = []
+  bets: IBet[] = []
 
   isUnsaved = false
 
@@ -26,14 +27,12 @@ class Store {
     })
 
     runInAction(async () => {
-      const data = await api.getTeamsOfLeague(this.activeLeagueId)
-      this.teams = data.map(({ team }) => team)
+      this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
       this.bets = localStorageService.get()
     })
 
     reaction(() => this.activeLeagueId, async () => {
-      const data = await api.getTeamsOfLeague(this.activeLeagueId)
-      this.teams = data.map(({ team }) => team)
+      this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
     })
   }
 
@@ -57,9 +56,9 @@ class Store {
   addBet = () => {
     this.bets = [...this.bets, {
       key: this.bets.length,
-      date: '',
-      home: '',
-      visit: '',
+      date: null,
+      home: null,
+      visit: null,
       bet: '',
       sum: 0,
       result: '',
@@ -68,12 +67,11 @@ class Store {
     this.isUnsaved = true
   }
 
-  changeBet = (key, field, data) => {
-    const bet = this.bets.find(bet => bet.key === key)
-    bet[field] = data
+  changeBet = (key: number, field: string, data: any) : void => {
+    this.bets.find(bet => bet.key === key)[field] = data
   }
 
-  deleteBets = keys => {
+  deleteBets = (keys: number[]) => {
     this.bets = this.bets.filter(bet => !keys.includes(bet.key))
     this.isUnsaved = true
   }

@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "es5",
+    "target": "es2016",
     "allowJs": true,
-    // fix problems for "imports something from 'something'"
     "esModuleInterop": true,
-    // for "imports something from 'something'"
     "allowSyntheticDefaultImports": true,
     "module": "commonjs",
-    //Controls how JSX constructs are emitted in JavaScript files.
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "jsx": "react"
   },
   "include": [
     "src",
-    //convert just images to modules
-    "./src/declaration.d.ts"
+    "src/declaration.d.ts"
   ]
 }

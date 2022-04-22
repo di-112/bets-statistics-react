@@ -1,5 +1,7 @@
+import { IBet } from '../types'
+
 const localStorageService = {
-  put: bets => {
+  put: (bets: IBet[]) => {
     localStorage.setItem('bets', JSON.stringify(bets))
   },
 

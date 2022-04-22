@@ -1,23 +1,34 @@
 import { DatePicker, Input } from 'antd'
+import { Moment } from 'moment'
 import React from 'react'
+import { ColumnsType } from 'antd/es/table'
 import { BETS, DATE_FORMAT, RESULTS } from '../../../../enums'
 import Select from '../Select'
 import TeamCell from './components/TeamCell'
 import ResultCell from './components/ResultCell'
+import { IBet, ITeam, TeamStatus } from '../../../../types'
 
-export const getColumns = (teams, changeBet) => [
+export const getColumns = (
+  teams: ITeam[],
+  changeBet: (key: number, field: string, data: any) => void,
+) : ColumnsType<IBet> => [
   {
     title: 'Дата',
     dataIndex: 'date',
     align: 'center',
     width: '20%',
     render: (date, record) => (record.isNew
-      ? <DatePicker onChange={value => changeBet(record.key, 'date', value.format(DATE_FORMAT))} format={DATE_FORMAT} />
+      ? (
+        <DatePicker
+          onChange={(value: Moment) => changeBet(record.key, 'date', value.format(DATE_FORMAT))}
+          format={DATE_FORMAT}
+        />
+      )
       : date),
   },
   {
     title: 'Матч',
-    dataIndex: 'home',
+    dataIndex: TeamStatus.home,
     colSpan: 2,
     width: '20%',
     align: 'center',
@@ -25,15 +36,15 @@ export const getColumns = (teams, changeBet) => [
       ? (
         <Select
           options={teams}
-          onChange={value => changeBet(record.key, 'home', teams.find(team => team.name === value))}
+          onChange={value => changeBet(record.key, TeamStatus.home, teams.find(team => team.name === value))}
         />
       )
       : (
-        record.home && <TeamCell record={record} field="home" />)),
+        record.home && <TeamCell team={record.home} />)),
   },
   {
     title: 'Матч',
-    dataIndex: 'visit',
+    dataIndex: TeamStatus.visit,
     width: '20%',
     colSpan: 0,
     align: 'center',
@@ -42,35 +53,31 @@ export const getColumns = (teams, changeBet) => [
         <Select
           onChange={value => changeBet(
             record.key,
-            'visit',
+            TeamStatus.visit,
             teams.find(team => team.name === value),
           )}
           options={teams}
         />
       )
-      : record.visit && <TeamCell record={record} field="visit" />),
+      : record.visit && <TeamCell team={record.visit} />),
   },
   {
     title: 'Ставка',
     dataIndex: 'bet',
     width: '10%',
     align: 'center',
-    render: (text, record) => {
-      console.log('test: ', text)
-      console.log('bet: ', record)
-      return (record.isNew
-        ? (
-          <Select
-            options={BETS}
-            onChange={value => changeBet(
-              record.key,
-              'bet',
-              value,
-            )}
-          />
-        )
-        : record.bet)
-    },
+    render: (text, record) => (record.isNew
+      ? (
+        <Select
+          options={BETS}
+          onChange={value => changeBet(
+            record.key,
+            'bet',
+            value,
+          )}
+        />
+      )
+      : record.bet),
   },
   {
     title: 'Сумма',
@@ -83,7 +90,7 @@ export const getColumns = (teams, changeBet) => [
     title: 'Исход',
     dataIndex: 'result',
     align: 'center',
-    render: (text, record) => (record.isNew
+    render: (text: string, record: IBet) => (record.isNew
       ? (
         <Select
           options={Object.values(RESULTS)}
