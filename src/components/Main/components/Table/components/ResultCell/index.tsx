@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
-import PropTypes from 'prop-types'
 import { RESULTS } from '../../../../../../enums'
 
-const ResultCell = ({ result }) => (
+interface IResultCell {
+  result: RESULTS
+}
+
+const ResultCell: FC<IResultCell> = ({ result }) => (
   <div>
     {
         result === RESULTS.win
@@ -12,9 +15,5 @@ const ResultCell = ({ result }) => (
     }
   </div>
 )
-
-ResultCell.propTypes = {
-  result: PropTypes.string,
-}
 
 export default ResultCell

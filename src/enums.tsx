@@ -22,7 +22,7 @@ export const BETS = [
   'Ф2(-1)',
 ]
 
-export const RESULTS = {
-  win: 'Выигрыш',
-  loose: 'Проигрыш',
+export enum RESULTS {
+  win = 'Выигрыш',
+  loose = 'Проигрыш',
 }

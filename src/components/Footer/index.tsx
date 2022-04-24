@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from './style.less'
 
-const Footer = () => (
+const Footer: FC = () => (
   <div className={styles.footer} />
 )
 

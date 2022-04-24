@@ -80,11 +80,46 @@ export const getColumns = (
       : record.bet),
   },
   {
+    title: 'Коэф-т',
+    dataIndex: 'quotient',
+    width: '5%',
+    align: 'center',
+    render: (text, record) => (record.isNew
+      ? (
+        <Input
+          defaultValue={record.quotient}
+          style={{ textAlign: 'center' }}
+          onChange={event => {
+            changeBet(
+              record.key,
+              'quotient',
+              event.target.value,
+            )
+          }}
+        />
+      )
+      : text),
+  },
+  {
     title: 'Сумма',
     dataIndex: 'sum',
-    width: '15%',
+    width: '10%',
     align: 'center',
-    render: (text, record) => (record.isNew ? <Input defaultValue={text} /> : text),
+    render: (text, record) => (record.isNew
+      ? (
+        <Input
+          defaultValue={record.sum}
+          style={{ textAlign: 'center' }}
+          onChange={event => {
+            changeBet(
+              record.key,
+              'sum',
+              event.target.value,
+            )
+          }}
+        />
+      )
+      : text),
   },
   {
     title: 'Исход',

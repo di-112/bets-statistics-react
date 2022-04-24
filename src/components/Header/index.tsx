@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from './style.less'
 
-const Header = () => (
+const Header: FC = () => (
   <div className={styles.header} />
 )
 

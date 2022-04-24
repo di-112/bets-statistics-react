@@ -1,7 +1,7 @@
 import {
-  action, makeObservable, observable, reaction, runInAction,
+  action, computed, makeObservable, observable, reaction, runInAction,
 } from 'mobx'
-import { LEAGUES } from '../enums'
+import { LEAGUES, RESULTS } from '../enums'
 import api from '../api'
 import localStorageService from '../localStorage/localStorageService'
 import { IBet, ITeam } from '../types'
@@ -24,6 +24,7 @@ class Store {
       addBet: action,
       onSave: action,
       setIsUnsaved: action,
+      analytics: computed,
     })
 
     runInAction(async () => {
@@ -49,7 +50,6 @@ class Store {
       ...bet,
       isNew: false,
     }))
-    this.isUnsaved = false
     localStorageService.put(this.bets)
   }
 
@@ -60,11 +60,11 @@ class Store {
       home: null,
       visit: null,
       bet: '',
+      quotient: null,
       sum: 0,
-      result: '',
+      result: null,
       isNew: true,
     }]
-    this.isUnsaved = true
   }
 
   changeBet = (key: number, field: string, data: any) : void => {
@@ -73,12 +73,32 @@ class Store {
 
   deleteBets = (keys: number[]) => {
     this.bets = this.bets.filter(bet => !keys.includes(bet.key))
-    this.isUnsaved = true
+    localStorageService.put(this.bets)
   }
 
-  /* get isDisableSaveButton() {
-    return !this.bets.filter(bet => bet.isNew).length
-  } */
+  get unsavedBets() {
+    return this.bets.filter(bet => bet.isNew)
+  }
+
+  get analytics() {
+    return {
+      profit: this.bets
+        .filter(bet => !bet.isNew)
+        .reduce((acc: number, bet) => {
+          if (bet.result === RESULTS.win) {
+            return acc + (bet.sum * bet.quotient) - bet.sum
+          }
+          return acc - bet.sum
+        }, 0) || 0,
+      bestBet: this.bets
+        .filter(bet => bet.result === RESULTS.win)
+        .map(bet => bet.bet)
+        .reduce((acc, bet) => {
+          acc[bet] = (acc[bet] || 0) + 1
+          return acc
+        }, {}),
+    }
+  }
 }
 
 export default new Store()

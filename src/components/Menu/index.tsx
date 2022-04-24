@@ -1,6 +1,6 @@
 import { Button, Menu as AntMenu } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import React from 'react'
+import React, { Dispatch, FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import styles from './style.less'
 import { LEAGUES } from '../../enums'
@@ -8,7 +8,12 @@ import { useStore } from '../../store/provider'
 
 const LEAGUES_NAMES = Object.keys(LEAGUES)
 
-const Menu = observer(({
+interface IMenu {
+  collapsed: boolean,
+  setCollapsed: Dispatch<boolean>
+}
+
+const Menu : FC<IMenu> = observer(({
   collapsed,
   setCollapsed,
 }) => {
@@ -24,7 +29,7 @@ const Menu = observer(({
       <Button
         type="ghost"
         className={styles.collapseButton}
-        onClick={() => setCollapsed(value => !value)}
+        onClick={() => setCollapsed(!collapsed)}
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       />
       <AntMenu

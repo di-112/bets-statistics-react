@@ -1,3 +1,5 @@
+import { RESULTS } from '../enums'
+
 export interface ITeam {
   country: string,
   id: number,
@@ -10,9 +12,10 @@ export interface IBet {
   date: Date | null,
   home: ITeam | null,
   visit: ITeam | null,
+  quotient: number | null,
   bet: string,
   sum: number,
-  result: string,
+  result: RESULTS,
   isNew?: boolean,
 }
 
