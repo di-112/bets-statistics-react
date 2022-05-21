@@ -1,0 +1,30 @@
+@import "../../../../variables";
+
+.statistic {
+  height: @statistic-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  .item {
+    margin: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .value {
+      font-size: 20px;
+
+      &.plus {
+        color: green;
+      }
+
+      &.minus {
+        color: red;
+      }
+    }
+  }
+}

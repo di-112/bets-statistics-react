@@ -15,7 +15,7 @@ const getCssLoaders = (extra, isModules = true) => {
     loader: 'css-loader',
     options: isModules ? {
       modules: {
-        localIdentName: '[name]__[local]___[hash:base64:5]',
+        localIdentName: '[local]___[hash:base64:5]',
       },
     } : {},
   }, 'postcss-loader']

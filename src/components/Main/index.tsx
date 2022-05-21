@@ -20,6 +20,7 @@ const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
   const [selected, setSelected] = useState<number[]>([])
 
   return (
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
     <Spin indicator={antIcon} spinning={false}>
       <div className={cn('main', { blur: isOpenMenu })}>

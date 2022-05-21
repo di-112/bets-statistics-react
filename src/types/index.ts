@@ -1,3 +1,4 @@
+import { Moment } from 'moment'
 import { RESULTS } from '../enums'
 
 export interface ITeam {
@@ -9,7 +10,7 @@ export interface ITeam {
 
 export interface IBet {
   key: number,
-  date: Date | null,
+  date: Moment | null,
   home: ITeam | null,
   visit: ITeam | null,
   quotient: number | null,

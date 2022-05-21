@@ -2,15 +2,27 @@
   margin-bottom: 12px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 
-  button {
-    height: 24px;
-    width: 24px;
-    margin-right: 8px;
+  .date {
+    display: flex;
+    align-items: center;
 
-    &:last-child{
-      margin-right: 0;
+    .picker {
+      height: 24px;
+      margin: 0 10px;
+    }
+  }
+
+  .buttons {
+    button {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+
+      &:last-child{
+        margin-right: 0;
+      }
     }
   }
 }
