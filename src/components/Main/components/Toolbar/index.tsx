@@ -6,6 +6,7 @@ import {
 import { observer } from 'mobx-react-lite'
 
 import moment, { Moment } from 'moment'
+import axios from 'axios'
 import { useStore } from '../../../../store/provider'
 import styles from './style.less'
 import { checkBets, openNotification } from '../../../../utils'
@@ -25,9 +26,9 @@ const Toolbar: FC<IToolbar> = observer(({ selected }) => {
     unsavedBets,
   } = useStore()
 
-  const onSaveValidate = () => {
+  const onSaveValidate = async () => {
     if (checkBets(unsavedBets)) {
-      onSave()
+      await onSave()
       return
     }
     openNotification({

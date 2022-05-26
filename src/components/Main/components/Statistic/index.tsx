@@ -30,7 +30,7 @@ const Statistic: FC = observer(() => {
       </div>
       <div className={styles.item}>
         Лучшая ставка:
-        <span className={styles.value}>{bestBet.length ? bestBet.map(bet => bet) : 'Нет'}</span>
+        <span className={styles.value}>{bestBet.length ? bestBet.map(bet => <div>{bet}</div>) : 'Нет'}</span>
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ export interface ITeam {
 
 export interface IBet {
   key: number,
+  leagueId: number,
   date: Moment | null,
   home: ITeam | null,
   visit: ITeam | null,

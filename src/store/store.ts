@@ -7,7 +7,7 @@ import localStorageService from '../localStorage/localStorageService'
 import { IBet, ITeam } from '../types'
 
 class Store {
-  activeLeagueId: number = LEAGUES[0]
+  activeLeagueId: number = Object.values(LEAGUES)[0]
 
   teams : ITeam[] = []
 
@@ -30,14 +30,13 @@ class Store {
 
     runInAction(async () => {
       this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-      this.bets = localStorageService.get(this.activeLeagueId)
+      this.bets = await api.getBets(this.activeLeagueId)
     })
 
     reaction(() => this.activeLeagueId, async () => {
       this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-      console.log('teams: ', this.teams)
-
-      this.bets = localStorageService.get(this.activeLeagueId)
+      const res = await api.getBets(this.activeLeagueId)
+      this.bets = res || []
     })
   }
 
@@ -53,16 +52,14 @@ class Store {
     this.bets = bets
   }
 
-  onSave = () => {
-    this.bets = this.bets.map(bet => ({
-      ...bet,
-      isNew: false,
-    }))
-    localStorageService.put(this.bets, this.activeLeagueId)
+  onSave = async () => {
+    await api.saveBets(this.unsavedBets.map(bet => ({ ...bet, isNew: false })))
+    this.bets = await api.getBets(this.activeLeagueId)
   }
 
   addBet = () => {
     this.bets = [...this.bets, {
+      leagueId: this.activeLeagueId,
       key: this.bets.length,
       date: null,
       home: null,
@@ -79,9 +76,11 @@ class Store {
     this.bets.find(bet => bet.key === key)[field] = data
   }
 
-  deleteBets = (keys: number[]) => {
-    this.bets = this.bets.filter(bet => !keys.includes(bet.key))
-    localStorageService.put(this.bets)
+  deleteBets = async (keys: number[]) => {
+    // this.bets = this.bets.filter(bet => !keys.includes(bet.key))
+    // localStorageService.put(this.bets)
+    await api.deleteBet(keys, this.activeLeagueId)
+    this.bets = await api.getBets(this.activeLeagueId)
   }
 
   get unsavedBets() {
