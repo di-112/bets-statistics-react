@@ -3,7 +3,6 @@ import {
 } from 'mobx'
 import { LEAGUES, RESULTS } from '../enums'
 import api from '../api'
-import localStorageService from '../localStorage/localStorageService'
 import { IBet, ITeam } from '../types'
 
 class Store {
@@ -59,7 +58,6 @@ class Store {
 
   addBet = () => {
     this.bets = [...this.bets, {
-      leagueId: this.activeLeagueId,
       key: this.bets.length,
       date: null,
       home: null,
@@ -68,6 +66,7 @@ class Store {
       quotient: null,
       sum: 0,
       result: null,
+      leagueId: this.activeLeagueId,
       isNew: true,
     }]
   }

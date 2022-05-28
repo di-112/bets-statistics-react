@@ -33,7 +33,7 @@ class Api {
   saveBets = bets => this.axiosBets.post('', { bets })
     .then(res => res.status)
 
-  deleteBet = (keys, leagueId) => this.axiosBets.post('delete', { keys, leagueId })
+  deleteBet = (keys, leagueId) => this.axiosBets.delete(`/?leagueId=${leagueId}&keys=${keys.join('_')}`)
     .then(res => res.status)
 }
 
