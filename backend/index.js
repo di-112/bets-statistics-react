@@ -2,12 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const db = require('./db')
 
-const { getBets, addBets, deleteBet } = require('./methods')
-
-/* db.serialize(() => {
-  db.run('CREATE TABLE BETS (key,date, home,  visit, quotient, bet, sum, result, leagueId, isNew)')
-}) */
-
 const app = express()
 
 app.use(cors())
@@ -58,19 +52,6 @@ app.delete('/bets', async (req, res) => {
     })
   }
 })
-
-/* app.get('/bets', async (req, res) => {
-  const { leagueId } = req.query
-
-  try {
-    const bets = await db.getBets(leagueId)
-    res.send(bets)
-  } catch (error) {
-    res.status(400).send({
-      error: error.message,
-    })
-  }
-}) */
 
 app.get('/bets', async (req, res) => {
   const { leagueId } = req.query
