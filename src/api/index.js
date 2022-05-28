@@ -4,7 +4,7 @@ class Api {
   constructor() {
     this.API_KEY = 'acec6bb8a2949c8b4d6b774916128133'
 
-    this.BETS_URL = 'http://localhost:5050/bets/'
+    this.BETS_URL = 'http://localhost:5050/bets'
 
     this.axiosTeams = axios.create({
       baseURL: 'https://v3.football.api-sports.io',
@@ -24,17 +24,22 @@ class Api {
   getTeamsOfLeague = (leagueId = 39) => this.axiosTeams.get(`/teams?league=${leagueId}&season=2021`)
     .then(res => res.data.response.map(({ team }) => team))
 
-  getBets = (leagueId = 39) => this.axiosBets.get(`/?leagueId=${leagueId}`)
-    .then(res => {
-      console.log('data: ', res.data)
-      return res.data
-    })
+  getBets = (leagueId = 39, date) => this.axiosBets.get('', {
+    params: {
+      leagueId,
+      date,
+    },
+  }).then(res => res.data)
 
   saveBets = bets => this.axiosBets.post('', { bets })
     .then(res => res.status)
 
-  deleteBet = (keys, leagueId) => this.axiosBets.delete(`/?leagueId=${leagueId}&keys=${keys.join('_')}`)
-    .then(res => res.status)
+  deleteBet = (keys, leagueId) => this.axiosBets.delete('', {
+    params: {
+      leagueId,
+      keys: [...new Set(keys)].join('_'),
+    },
+  }).then(res => res.status)
 }
 
 const api = new Api()

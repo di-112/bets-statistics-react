@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const db = require('./db')
 
+const PORT = 5050
+
 const app = express()
 
 app.use(cors())
@@ -17,8 +19,8 @@ app.use((error, req, res, next) => {
   })
 })
 
-app.listen(5050, () => {
-  console.log('Server started (http://localhost:5050/) !')
+app.listen(PORT, () => {
+  console.log(`Server started on ${PORT} port`)
 })
 
 app.get('/', (req, res) => {
@@ -27,8 +29,7 @@ app.get('/', (req, res) => {
 
 app.post('/bets', async (req, res) => {
   try {
-    const bets = await db.addBets(req.body.bets)
-    console.log('bets: ', bets)
+    await db.addBets(req.body.bets)
     res.status(200).send({
       success: true,
     })
@@ -42,7 +43,7 @@ app.post('/bets', async (req, res) => {
 app.delete('/bets', async (req, res) => {
   try {
     const { keys, leagueId } = req.query
-    await db.deleteBet(keys, leagueId)
+    await db.deleteBet(keys.split('_'), leagueId)
     res.send({
       success: true,
     })
@@ -54,10 +55,10 @@ app.delete('/bets', async (req, res) => {
 })
 
 app.get('/bets', async (req, res) => {
-  const { leagueId } = req.query
+  const { leagueId, date } = req.query
 
   try {
-    const bets = await db.getBets(leagueId)
+    const bets = await db.getBets(leagueId, date)
     res.send(bets)
   } catch (error) {
     res.status(400).send({

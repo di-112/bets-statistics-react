@@ -6,11 +6,11 @@ import {
 import { observer } from 'mobx-react-lite'
 
 import moment, { Moment } from 'moment'
-import axios from 'axios'
 import { useStore } from '../../../../store/provider'
 import styles from './style.less'
 import { checkBets, openNotification } from '../../../../utils'
 import localStorageService from '../../../../localStorage/localStorageService'
+import api from '../../../../api';
 
 interface IToolbar {
   selected: number[]
@@ -46,7 +46,12 @@ const Toolbar: FC<IToolbar> = observer(({ selected }) => {
           allowClear={false}
           className={styles.picker}
           defaultValue={moment()}
-          onChange={(month : Moment) => { setBets(localStorageService.get(activeLeagueId, month)) }}
+          onChange={async (month : Moment) => {
+            const bets = await api.getBets(activeLeagueId, month.format())
+            console.log('bets: ', bets)
+
+            setBets(bets)
+          }}
         />
       </div>
       <div className={styles.buttons}>

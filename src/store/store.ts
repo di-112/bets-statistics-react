@@ -76,8 +76,6 @@ class Store {
   }
 
   deleteBets = async (keys: number[]) => {
-    // this.bets = this.bets.filter(bet => !keys.includes(bet.key))
-    // localStorageService.put(this.bets)
     await api.deleteBet(keys, this.activeLeagueId)
     this.bets = await api.getBets(this.activeLeagueId)
   }
