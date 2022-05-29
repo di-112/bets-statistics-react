@@ -6,11 +6,18 @@ const { Option } = AntSelect
 
 interface ISelect {
   options: ITeam[] | string[],
-  onChange: (value?: string) => void
+  onChange: (value?: string) => void,
+  className? :string
 }
 
-const Select: FC<ISelect> = ({ options = [], onChange = () => {} }) => (
-  <AntSelect onChange={onChange} style={{ width: '100%' }} showSearch allowClear>
+const Select: FC<ISelect> = ({ options = [], onChange = () => {}, className }) => (
+  <AntSelect
+    className={className}
+    onChange={onChange}
+    style={{ width: '100%' }}
+    showSearch
+    allowClear
+  >
     {options.map(option => (
       typeof option === 'string'
         ? (

@@ -31,6 +31,7 @@ const Toolbar: FC<IToolbar> = observer(({ selected }) => {
     const errors = getErrorsBets(unsavedBets)
 
     if (!errors.length) {
+      setErrorField([])
       await onSave()
       return
     }

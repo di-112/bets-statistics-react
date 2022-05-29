@@ -13,9 +13,16 @@ interface ITable {
 }
 
 const Table: FC<ITable> = observer(({ setSelected }) => {
-  const { bets, teams, changeBet } = useStore()
+  const {
+    bets, teams, changeBet, errorFields,
+  } = useStore()
 
-  const columns = useMemo<ColumnsType<IBet>>(() => getColumns(teams, changeBet), [teams, changeBet])
+  console.log('errorFields: ', errorFields)
+
+  const columns = useMemo<ColumnsType<IBet>>(
+    () => getColumns(teams, changeBet, errorFields),
+    [teams, changeBet, errorFields],
+  )
 
   const rowSelection = {
     onChange: setSelected,

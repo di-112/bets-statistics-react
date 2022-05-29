@@ -1,12 +1,19 @@
 @import "../../../../variables";
 
-.table{
+.table {
   height: calc(100% - 36px - @statistic-height);
   margin: 0 auto;
   position: relative;
 }
 
-.tableFooter{
+.error {
+  border-color: red;
+  >div {
+    border-color: red !important;
+  }
+}
+
+.tableFooter {
   height: 20px;
   width: 100%;
   background: #fafafa;;

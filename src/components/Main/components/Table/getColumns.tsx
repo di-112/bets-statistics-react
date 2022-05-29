@@ -2,16 +2,20 @@ import { DatePicker, Input } from 'antd'
 import { Moment } from 'moment'
 import React from 'react'
 import { ColumnsType } from 'antd/es/table'
+import classnames from 'classnames/bind';
 import { BETS, DATE_FORMAT, RESULTS } from '../../../../enums'
 import Select from '../Select'
 import TeamCell from './components/TeamCell'
 import ResultCell from './components/ResultCell'
 import { IBet, ITeam, TeamStatus } from '../../../../types'
-import { useStore } from '../../../../store/provider';
+import styles from './style.less'
+
+const cn = classnames.bind(styles)
 
 export const getColumns = (
   teams: ITeam[],
   changeBet: (key: number, field: string, data: any) => void,
+  errors: any,
 ) : ColumnsType<IBet> => [
   {
     title: 'Дата',
@@ -21,6 +25,9 @@ export const getColumns = (
     render: (date, record) => (record.isNew
       ? (
         <DatePicker
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes('date'),
+          })}
           onChange={(value: Moment) => changeBet(record.key, 'date', value.format(DATE_FORMAT))}
           format={DATE_FORMAT}
         />
@@ -36,6 +43,9 @@ export const getColumns = (
     render: (text, record) => (record.isNew
       ? (
         <Select
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes(TeamStatus.home),
+          })}
           options={teams}
           onChange={value => changeBet(record.key, TeamStatus.home, teams.find(team => team.name === value))}
         />
@@ -52,6 +62,9 @@ export const getColumns = (
     render: (text, record) => (record.isNew
       ? (
         <Select
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes(TeamStatus.visit),
+          })}
           onChange={value => changeBet(
             record.key,
             TeamStatus.visit,
@@ -70,6 +83,9 @@ export const getColumns = (
     render: (text, record) => (record.isNew
       ? (
         <Select
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes('bet'),
+          })}
           options={BETS}
           onChange={value => changeBet(
             record.key,
@@ -88,6 +104,9 @@ export const getColumns = (
     render: (text, record) => (record.isNew
       ? (
         <Input
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes('quotient'),
+          })}
           defaultValue={record.quotient}
           style={{ textAlign: 'center' }}
           onChange={event => {
@@ -109,6 +128,9 @@ export const getColumns = (
     render: (text, record) => (record.isNew
       ? (
         <Input
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes('sum'),
+          })}
           defaultValue={record.sum}
           style={{ textAlign: 'center' }}
           onChange={event => {
@@ -129,6 +151,9 @@ export const getColumns = (
     render: (text: string, record: IBet) => (record.isNew
       ? (
         <Select
+          className={cn({
+            error: errors.find(item => item.key === record.key)?.errors.includes('result'),
+          })}
           options={Object.values(RESULTS)}
           onChange={value => changeBet(
             record.key,
