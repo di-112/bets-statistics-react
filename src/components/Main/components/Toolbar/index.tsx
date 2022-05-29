@@ -8,9 +8,9 @@ import { observer } from 'mobx-react-lite'
 import moment, { Moment } from 'moment'
 import { useStore } from '../../../../store/provider'
 import styles from './style.less'
-import { checkBets, openNotification } from '../../../../utils'
-import localStorageService from '../../../../localStorage/localStorageService'
+import { getErrorsBets, openNotification } from '../../../../utils'
 import api from '../../../../api';
+import { DATE_FORMAT } from '../../../../enums';
 
 interface IToolbar {
   selected: number[]
@@ -24,16 +24,20 @@ const Toolbar: FC<IToolbar> = observer(({ selected }) => {
     onSave,
     deleteBets,
     unsavedBets,
+    setErrorField,
   } = useStore()
 
   const onSaveValidate = async () => {
-    if (checkBets(unsavedBets)) {
+    const errors = getErrorsBets(unsavedBets)
+
+    if (!errors.length) {
       await onSave()
       return
     }
+    setErrorField(errors)
     openNotification({
       message: 'Ошибка',
-      description: 'Не заполнены обязательные поля',
+      description: 'Ставка указана неверно',
       icon: <CloseCircleOutlined style={{ color: 'red' }} />,
     })
   }
@@ -47,8 +51,7 @@ const Toolbar: FC<IToolbar> = observer(({ selected }) => {
           className={styles.picker}
           defaultValue={moment()}
           onChange={async (month : Moment) => {
-            const bets = await api.getBets(activeLeagueId, month.format())
-            console.log('bets: ', bets)
+            const bets = await api.getBets(activeLeagueId, month.format(DATE_FORMAT))
 
             setBets(bets)
           }}

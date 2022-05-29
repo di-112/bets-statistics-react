@@ -1,4 +1,6 @@
 import axios from 'axios'
+import moment from 'moment'
+import { DATE_FORMAT } from '../enums'
 
 class Api {
   constructor() {
@@ -24,7 +26,7 @@ class Api {
   getTeamsOfLeague = (leagueId = 39) => this.axiosTeams.get(`/teams?league=${leagueId}&season=2021`)
     .then(res => res.data.response.map(({ team }) => team))
 
-  getBets = (leagueId = 39, date) => this.axiosBets.get('', {
+  getBets = (leagueId = 39, date = moment().format(DATE_FORMAT)) => this.axiosBets.get('', {
     params: {
       leagueId,
       date,

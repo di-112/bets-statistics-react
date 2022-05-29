@@ -14,15 +14,19 @@ class Store {
 
   isUnsaved = false
 
+  errorFields = []
+
   constructor() {
     makeObservable(this, {
       activeLeagueId: observable,
+      errorFields: observable,
       isUnsaved: observable,
       teams: observable,
       bets: observable,
       addBet: action,
       onSave: action,
       setIsUnsaved: action,
+      setErrorField: action,
       setBets: action,
       analytics: computed,
     })
@@ -41,6 +45,10 @@ class Store {
 
   setIsUnsaved = bool => {
     this.isUnsaved = bool
+  }
+
+  setErrorField = fields => {
+    this.errorFields = fields
   }
 
   setActiveLeagueId = id => {

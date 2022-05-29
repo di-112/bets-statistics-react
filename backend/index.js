@@ -1,6 +1,11 @@
 const express = require('express')
 const cors = require('cors')
 const db = require('./db')
+const {
+  transformBetsFromDb,
+  transformBetsToDb,
+} = require('./helpers/transformBet')
+const { transformDateToDb } = require('./helpers/transformDate')
 
 const PORT = 5050
 
@@ -29,7 +34,7 @@ app.get('/', (req, res) => {
 
 app.post('/bets', async (req, res) => {
   try {
-    await db.addBets(req.body.bets)
+    await db.addBets(transformBetsToDb(req.body.bets))
     res.status(200).send({
       success: true,
     })
@@ -58,8 +63,8 @@ app.get('/bets', async (req, res) => {
   const { leagueId, date } = req.query
 
   try {
-    const bets = await db.getBets(leagueId, date)
-    res.send(bets)
+    const bets = await db.getBets(leagueId, transformDateToDb(date))
+    res.send(transformBetsFromDb(bets))
   } catch (error) {
     res.status(400).send({
       error: error.message,

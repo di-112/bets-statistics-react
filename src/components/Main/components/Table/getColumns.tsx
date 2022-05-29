@@ -7,6 +7,7 @@ import Select from '../Select'
 import TeamCell from './components/TeamCell'
 import ResultCell from './components/ResultCell'
 import { IBet, ITeam, TeamStatus } from '../../../../types'
+import { useStore } from '../../../../store/provider';
 
 export const getColumns = (
   teams: ITeam[],
