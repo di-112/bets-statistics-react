@@ -1,4 +1,4 @@
-import { DatePicker, Input } from 'antd'
+import { DatePicker, InputNumber } from 'antd'
 import { Moment } from 'moment'
 import React from 'react'
 import { ColumnsType } from 'antd/es/table'
@@ -14,14 +14,14 @@ const cn = classnames.bind(styles)
 
 export const getColumns = (
   teams: ITeam[],
-  changeBet: (key: number, field: string, data: any) => void,
+  changeBet: (key: number | string, field: string, data: any) => void,
   errors: any,
 ) : ColumnsType<IBet> => [
   {
     title: 'Дата',
     dataIndex: 'date',
     align: 'center',
-    width: '20%',
+    width: '15%',
     render: (date, record) => (record.isNew
       ? (
         <DatePicker
@@ -99,21 +99,23 @@ export const getColumns = (
   {
     title: 'Коэф-т',
     dataIndex: 'quotient',
-    width: '5%',
+    width: '10%',
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
-        <Input
+        <InputNumber
           className={cn({
             error: errors.find(item => item.key === record.key)?.errors.includes('quotient'),
           })}
+          min={1}
+          step={0.25}
           defaultValue={record.quotient}
           style={{ textAlign: 'center' }}
-          onChange={event => {
+          onChange={value => {
             changeBet(
               record.key,
               'quotient',
-              event.target.value,
+              value,
             )
           }}
         />
@@ -127,17 +129,18 @@ export const getColumns = (
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
-        <Input
+        <InputNumber
           className={cn({
             error: errors.find(item => item.key === record.key)?.errors.includes('sum'),
           })}
+          step={100}
+          min={0}
           defaultValue={record.sum}
-          style={{ textAlign: 'center' }}
-          onChange={event => {
+          onChange={value => {
             changeBet(
               record.key,
               'sum',
-              event.target.value,
+              value,
             )
           }}
         />

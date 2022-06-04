@@ -1,6 +1,7 @@
 @import "../../../../variables";
 
 .statistic {
+  background: #f0f0f0;
   height: @statistic-height;
   display: flex;
   align-items: center;
@@ -9,14 +10,17 @@
   .item {
     margin: 20px;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: center;
     align-items: center;
 
     .value {
-      font-size: 20px;
+      padding: 0 12px;
+      font-size: 22px;
+      font-style: italic;
+      color: green;
 
       &.plus {
         color: green;

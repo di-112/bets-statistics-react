@@ -11,6 +11,7 @@ const Statistic: FC = observer(() => {
     analytics: {
       profit,
       bestBet,
+      maxQuotient,
     },
   } = useStore()
 
@@ -26,6 +27,12 @@ const Statistic: FC = observer(() => {
           {profit > 0 && '+'}
           {profit < 0 && '-'}
           {profit}
+        </span>
+      </div>
+      <div className={styles.item}>
+        Максимальный коэф-т:
+        <span className={cn('value')}>
+          {maxQuotient}
         </span>
       </div>
       <div className={styles.item}>

@@ -1,6 +1,11 @@
 @import './variables';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :global {
+  * {
+    font-family: 'Roboto', sans-serif;
+  }
+
   body, html, #root {
     height: 100%;
     box-sizing: border-box;
@@ -14,16 +19,11 @@
     }
   }
 
-  .ant-table-container {
-    // height: calc(100vh - 238px)
-  }
-
   .ant-empty{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    // height: calc(100vh - 320px)
   }
 
   tr {
@@ -31,16 +31,22 @@
     min-height: 30px !important;
   }
 
+  .ant-input-number {
+    width: 100%;
+    input {
+      text-align: center;
+    }
+  }
 
-  .ant-menu-item:first-child{
+  .ant-menu-item:first-child {
     margin-top: 0;
   }
 
-  .ant-table-cell{
+  .ant-table-cell {
     padding: 0 !important;
   }
 
-  .ant-menu-root{
+  .ant-menu-root {
     height: calc(100vh - @header-height - @footer-height) !important;
   }
 
@@ -48,7 +54,7 @@
     width: 0 !important;
   }
 
-  .ant-menu-inline-collapsed-noicon{
+  .ant-menu-inline-collapsed-noicon {
     display: none;
   }
 }

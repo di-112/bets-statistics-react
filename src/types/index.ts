@@ -9,7 +9,7 @@ export interface ITeam {
 }
 
 export interface IBet {
-  key: number,
+  key: number | string,
   leagueId: number,
   date: Moment | null,
   home: ITeam | null,
@@ -19,6 +19,12 @@ export interface IBet {
   sum: number,
   result: RESULTS,
   isNew?: boolean,
+}
+
+export interface IAnalytics {
+  profit: number,
+  maxQuotient: number,
+  bestBet: string[]
 }
 
 export enum TeamStatus {

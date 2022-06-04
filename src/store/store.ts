@@ -1,9 +1,10 @@
 import {
-  action, computed, makeObservable, observable, reaction, runInAction,
+  action, makeObservable, observable, reaction, runInAction,
 } from 'mobx'
-import { LEAGUES, RESULTS } from '../enums'
+import moment, { Moment } from 'moment';
+import { DATE_FORMAT, LEAGUES } from '../enums'
 import api from '../api'
-import { IBet, ITeam } from '../types'
+import { IAnalytics, IBet, ITeam } from '../types'
 
 class Store {
   activeLeagueId: number = Object.values(LEAGUES)[0]
@@ -12,6 +13,16 @@ class Store {
 
   bets: IBet[] = []
 
+  isLoading = false
+
+  date: Moment = moment()
+
+  analytics: IAnalytics = {
+    profit: 0,
+    bestBet: [],
+    maxQuotient: 1,
+  }
+
   isUnsaved = false
 
   errorFields = []
@@ -19,28 +30,53 @@ class Store {
   constructor() {
     makeObservable(this, {
       activeLeagueId: observable,
+      isLoading: observable,
+      date: observable,
       errorFields: observable,
       isUnsaved: observable,
       teams: observable,
       bets: observable,
+      analytics: observable,
       addBet: action,
+      setAnalytics: action,
+      setDate: action,
       onSave: action,
+      setIsLoading: action,
       setIsUnsaved: action,
       setErrorField: action,
       setBets: action,
-      analytics: computed,
     })
 
     runInAction(async () => {
       this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-      this.bets = await api.getBets(this.activeLeagueId)
+      await this.refreshBets()
     })
 
     reaction(() => this.activeLeagueId, async () => {
+      this.date = moment()
       this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-      const res = await api.getBets(this.activeLeagueId)
-      this.bets = res || []
+      await this.refreshBets()
     })
+  }
+
+  refreshBets = async () => {
+    this.setIsLoading(true)
+    const { bets, analytics } = await api.getBets(this.activeLeagueId, this.date?.format(DATE_FORMAT))
+    this.bets = bets || []
+    this.analytics = analytics
+    this.setIsLoading(false)
+  }
+
+  setAnalytics = analytics => {
+    this.analytics = analytics
+  }
+
+  setIsLoading = bool => {
+    this.isLoading = bool
+  }
+
+  setDate = date => {
+    this.date = date
   }
 
   setIsUnsaved = bool => {
@@ -60,13 +96,16 @@ class Store {
   }
 
   onSave = async () => {
-    await api.saveBets(this.unsavedBets.map(bet => ({ ...bet, isNew: false })))
-    this.bets = await api.getBets(this.activeLeagueId)
+    await api.saveBets(this.unsavedBets.map(bet => {
+      const { key, isNew, ...rest } = bet
+      return rest
+    }))
+    await this.refreshBets()
   }
 
   addBet = () => {
     this.bets = [...this.bets, {
-      key: this.bets.length,
+      key: `${this.bets.length}+${this.activeLeagueId}`,
       date: null,
       home: null,
       visit: null,
@@ -79,19 +118,19 @@ class Store {
     }]
   }
 
-  changeBet = (key: number, field: string, data: any) : void => {
+  changeBet = (key: number | string, field: string, data: any) : void => {
     this.bets.find(bet => bet.key === key)[field] = data
   }
 
   deleteBets = async (keys: number[]) => {
     await api.deleteBet(keys, this.activeLeagueId)
-    this.bets = await api.getBets(this.activeLeagueId)
+    await this.refreshBets()
   }
 
   get unsavedBets() {
     return this.bets.filter(bet => bet.isNew)
   }
-
+/*
   get analytics() {
     const winBets = this.bets.filter(bet => bet.result === RESULTS.win && !bet.isNew)
 
@@ -115,7 +154,7 @@ class Store {
         }, 0) || 0,
       bestBet: Object.keys(betsCounts).filter(key => betsCounts[key] === maxCount),
     }
-  }
+  } */
 }
 
 export default new Store()

@@ -1,6 +1,12 @@
 import axios from 'axios'
-import moment from 'moment'
-import { DATE_FORMAT } from '../enums'
+import { Modal } from 'antd'
+
+const errorHandler = error => {
+  Modal.error({
+    title: 'Ошибка',
+    content: error.body.message || 'Что-то пошло не так',
+  })
+}
 
 class Api {
   constructor() {
@@ -21,27 +27,31 @@ class Api {
     })
   }
 
-  getLeague = (id = 39) => this.axiosTeams.get(`/leagues?id=${id}`).then(res => res.data.response)
-
-  getTeamsOfLeague = (leagueId = 39) => this.axiosTeams.get(`/teams?league=${leagueId}&season=2021`)
+  getTeamsOfLeague = (leagueId = 39) => this.axiosTeams
+    .get(`/teams?league=${leagueId}&season=2021`)
     .then(res => res.data.response.map(({ team }) => team))
+    .catch(errorHandler)
 
-  getBets = (leagueId = 39, date = moment().format(DATE_FORMAT)) => this.axiosBets.get('', {
+  getBets = (leagueId = 39, date) => this.axiosBets.get('', {
     params: {
       leagueId,
       date,
     },
-  }).then(res => res.data)
+  })
+    .then(res => res.data)
+    .catch(errorHandler)
 
   saveBets = bets => this.axiosBets.post('', { bets })
-    .then(res => res.status)
+    .then(res => res.status).catch(errorHandler)
 
   deleteBet = (keys, leagueId) => this.axiosBets.delete('', {
     params: {
       leagueId,
       keys: [...new Set(keys)].join('_'),
     },
-  }).then(res => res.status)
+  })
+    .then(res => res.status)
+    .catch(errorHandler)
 }
 
 const api = new Api()

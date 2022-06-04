@@ -22,7 +22,7 @@ export const openNotification = ({
 
 interface IGetErrorsBet {
   success: boolean,
-  key: number
+  key: number | string
   errors?: string[],
 }
 

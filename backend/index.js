@@ -63,8 +63,15 @@ app.get('/bets', async (req, res) => {
   const { leagueId, date } = req.query
 
   try {
-    const bets = await db.getBets(leagueId, transformDateToDb(date))
-    res.send(transformBetsFromDb(bets))
+    const { bets, analytics } = await db.getBets(leagueId, date ? transformDateToDb(date) : null)
+    res.send({
+      bets: transformBetsFromDb(bets),
+      analytics: {
+        profit: analytics.profit || 0,
+        maxQuotient: analytics.maxQuotient,
+        bestBet: [],
+      },
+    })
   } catch (error) {
     res.status(400).send({
       error: error.message,
