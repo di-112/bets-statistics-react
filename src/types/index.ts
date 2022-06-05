@@ -8,6 +8,13 @@ export interface ITeam {
   name: string
 }
 
+export interface ILeague {
+  id: number,
+  logo: string,
+  name: string,
+  type: string
+}
+
 export interface IBet {
   key: number | string,
   leagueId: number,

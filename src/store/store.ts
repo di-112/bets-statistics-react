@@ -7,7 +7,7 @@ import api from '../api'
 import { IAnalytics, IBet, ITeam } from '../types'
 
 class Store {
-  activeLeagueId: number = Object.values(LEAGUES)[0]
+  activeLeagueId: number = LEAGUES[0]
 
   teams : ITeam[] = []
 

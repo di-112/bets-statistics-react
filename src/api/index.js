@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Modal } from 'antd'
+import { LEAGUES } from '../enums'
 
 const errorHandler = error => {
   Modal.error({
@@ -26,6 +27,13 @@ class Api {
       baseURL: this.BETS_URL,
     })
   }
+
+  getLeagues = () => this.axiosTeams
+    .get('/leagues')
+    .then(res => res.data.response
+      .filter(item => LEAGUES.includes(item.league?.id))
+      .map(({ league }) => league))
+    .catch(errorHandler)
 
   getTeamsOfLeague = (leagueId = 39) => this.axiosTeams
     .get(`/teams?league=${leagueId}&season=2021`)
