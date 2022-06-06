@@ -28,17 +28,45 @@ class Api {
     })
   }
 
-  getLeagues = () => this.axiosTeams
-    .get('/leagues')
-    .then(res => res.data.response
-      .filter(item => LEAGUES.includes(item.league?.id))
-      .map(({ league }) => league))
-    .catch(errorHandler)
+  getLeagues = () => {
+    const savesLeagues = sessionStorage.getItem('leagues')
 
-  getTeamsOfLeague = (leagueId = 39) => this.axiosTeams
-    .get(`/teams?league=${leagueId}&season=2021`)
-    .then(res => res.data.response.map(({ team }) => team))
-    .catch(errorHandler)
+    if (savesLeagues) {
+      return Promise.resolve(JSON.parse(savesLeagues))
+    }
+
+    return this.axiosTeams
+      .get('/leagues')
+      .then(res => {
+        const leagues = res.data.response
+          .filter(item => LEAGUES.includes(item.league?.id))
+          .map(({ league }) => league)
+
+        sessionStorage.setItem('leagues', JSON.stringify(leagues))
+
+        return leagues
+      })
+      .catch(errorHandler)
+  }
+
+  getTeamsOfLeague = (leagueId = 39) => {
+    const savesTeams = sessionStorage.getItem(`league_${leagueId}_teams`)
+
+    if (savesTeams) {
+      return Promise.resolve(JSON.parse(savesTeams))
+    }
+
+    return this.axiosTeams
+      .get(`/teams?league=${leagueId}&season=2021`)
+      .then(res => {
+        const teams = res.data.response.map(({ team }) => team)
+
+        sessionStorage.setItem(`league_${leagueId}_teams`, JSON.stringify(teams))
+
+        return teams
+      })
+      .catch(errorHandler)
+  }
 
   getBets = (leagueId = 39, date) => this.axiosBets.get('', {
     params: {

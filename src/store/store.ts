@@ -19,7 +19,7 @@ class Store {
 
   analytics: IAnalytics = {
     profit: 0,
-    bestBet: [],
+    bestBets: [],
     maxQuotient: 1,
   }
 

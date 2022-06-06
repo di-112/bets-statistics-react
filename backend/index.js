@@ -66,11 +66,7 @@ app.get('/bets', async (req, res) => {
     const { bets, analytics } = await db.getBets(leagueId, date ? transformDateToDb(date) : null)
     res.send({
       bets: transformBetsFromDb(bets),
-      analytics: {
-        profit: analytics.profit || 0,
-        maxQuotient: analytics.maxQuotient,
-        bestBet: [],
-      },
+      analytics,
     })
   } catch (error) {
     res.status(400).send({

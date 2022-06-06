@@ -10,7 +10,7 @@ const Statistic: FC = observer(() => {
   const {
     analytics: {
       profit,
-      bestBet,
+      bestBets,
       maxQuotient,
     },
   } = useStore()
@@ -37,7 +37,7 @@ const Statistic: FC = observer(() => {
       </div>
       <div className={styles.item}>
         Лучшая ставка:
-        <span className={styles.value}>{bestBet.length ? bestBet.map(bet => <div>{bet}</div>) : 'Нет'}</span>
+        <span className={styles.value}>{bestBets.length ? bestBets.join(', ') : 'Нет'}</span>
       </div>
     </div>
   )

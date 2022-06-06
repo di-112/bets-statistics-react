@@ -37,11 +37,20 @@ const getBets = async (leagueId, date) => {
     .max('quotient as value')
     .first()
 
+  const betsBest = await betsQuery()
+    .where('result', 'Выигрыш')
+    .select(knex.raw('??, count(??) as ??', ['bet', 'quotient', 'count']))
+    .groupBy('bet')
+    .orderBy('count', 'desc')
+
   return {
     bets,
     analytics: {
       profit: plus.value - minus.value,
       maxQuotient: max.value,
+      bestBets: betsBest
+        .filter(item => item.count === betsBest[0].count)
+        .map(item => item.bet),
     },
   }
 }

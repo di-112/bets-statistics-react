@@ -31,7 +31,7 @@ export interface IBet {
 export interface IAnalytics {
   profit: number,
   maxQuotient: number,
-  bestBet: string[]
+  bestBets: string[]
 }
 
 export enum TeamStatus {
