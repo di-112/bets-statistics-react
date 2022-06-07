@@ -1,12 +1,13 @@
 import { Button, Menu as AntMenu } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import React, { Dispatch, FC } from 'react'
+import React, {
+  Dispatch, FC, useLayoutEffect, useState,
+} from 'react'
 import { observer } from 'mobx-react-lite'
 import styles from './style.less'
-import { LEAGUES } from '../../enums'
 import { useStore } from '../../store/provider'
-
-const LEAGUES_NAMES = Object.keys(LEAGUES)
+import api from '../../api';
+import { ILeague } from '../../types';
 
 interface IMenu {
   collapsed: boolean,
@@ -19,8 +20,16 @@ const Menu : FC<IMenu> = observer(({
 }) => {
   const { setActiveLeagueId } = useStore()
 
+  const [leagues, setLeagues] = useState<ILeague[]>([])
+
+  useLayoutEffect(() => {
+    if (!leagues.length) {
+      api.getLeagues().then(setLeagues)
+    }
+  }, [])
+
   const onSelect = item => {
-    setActiveLeagueId(LEAGUES[item.key])
+    setActiveLeagueId(item.key)
     setCollapsed(true)
   }
 
@@ -33,15 +42,25 @@ const Menu : FC<IMenu> = observer(({
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       />
       <AntMenu
-        defaultSelectedKeys={[LEAGUES_NAMES[0]]}
+        defaultSelectedKeys={[leagues[0]?.name]}
         mode="inline"
         theme="dark"
         inlineCollapsed={collapsed}
         onSelect={onSelect}
       >
-        {LEAGUES_NAMES.map(league => (
-          <AntMenu.Item key={league}>
-            {league}
+        {leagues.map(({ name, logo, id }) => (
+          <AntMenu.Item key={id}>
+            <img
+              alt={name}
+              style={{
+                width: 24,
+                height: 24,
+                marginRight: 8,
+              }}
+              src={logo}
+            />
+            {' '}
+            {name}
           </AntMenu.Item>
         ))}
       </AntMenu>

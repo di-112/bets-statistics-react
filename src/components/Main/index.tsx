@@ -7,6 +7,7 @@ import Toolbar from './components/Toolbar'
 import Table from './components/Table'
 import styles from './style.less'
 import Statistic from './components/Statistic'
+import { useStore } from '../../store/provider';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
@@ -19,10 +20,12 @@ interface IMainContent {
 const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
   const [selected, setSelected] = useState<number[]>([])
 
+  const { isLoading } = useStore()
+
   return (
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-    <Spin indicator={antIcon} spinning={false}>
+    <Spin indicator={antIcon} spinning={isLoading}>
       <div className={cn('main', { blur: isOpenMenu })}>
         <div className={styles.wrapper}>
           <Toolbar selected={selected} />
