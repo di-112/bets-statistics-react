@@ -29,19 +29,20 @@ const getBets = async (leagueId, date) => {
 
   const maxQuotient = Math.max(...bets.map(bet => bet.quotient))
 
-  const maxCountWins = Math.max(...winBets.reduce((acc, { bet }) => ({
+  const betCountWins = winBets.reduce((acc, { bet }) => ({
     ...acc,
-    [bet]: (acc[bet] || 0) + 1,
-  }), {}))
+    [bet]: (acc[bet] ?? 0) + 1,
+  }), {})
+
+  const maxCountWins = Math.max(...Object.values(betCountWins))
 
   return {
     bets,
     analytics: {
       profit,
       maxQuotient,
-      bestBets: winBets
-        .filter(item => item.count === maxCountWins)
-        .map(item => item.bet),
+      bestBets: Object.keys(betCountWins)
+        .filter(key => betCountWins[key] === maxCountWins),
     },
   }
 }
@@ -54,7 +55,5 @@ const deleteBet = (keys, leagueId) => knex(TABLE)
   .del()
 
 module.exports = {
-  getBets,
-  addBets,
-  deleteBet,
+  getBets, addBets, deleteBet,
 }
