@@ -1,6 +1,6 @@
-import { notification } from 'antd'
 import { ReactNode } from 'react'
-import { IBet } from './types'
+import { notification } from 'antd'
+import { IBet } from '@types'
 
 interface IOpenNotification {
   message: string,

@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { Modal } from 'antd'
-import { LEAGUES } from '../enums'
+import axios, { AxiosInstance } from 'axios'
+import { LEAGUES } from '@enums'
 
 const errorHandler = error => {
   Modal.error({
@@ -10,6 +10,14 @@ const errorHandler = error => {
 }
 
 class Api {
+  API_KEY: string
+
+  BETS_URL: string
+
+  axiosTeams: AxiosInstance
+
+  axiosBets: AxiosInstance
+
   constructor() {
     this.API_KEY = 'acec6bb8a2949c8b4d6b774916128133'
 
@@ -49,7 +57,7 @@ class Api {
       .catch(errorHandler)
   }
 
-  getTeamsOfLeague = (leagueId = 39) => {
+  getTeamsOfLeague = (leagueId = LEAGUES[1]) => {
     const savesTeams = sessionStorage.getItem(`league_${leagueId}_teams`)
 
     if (savesTeams) {
@@ -68,7 +76,7 @@ class Api {
       .catch(errorHandler)
   }
 
-  getBets = (leagueId = 39, date) => this.axiosBets.get('', {
+  getBets = (leagueId = LEAGUES[1], date) => this.axiosBets.get('', {
     params: {
       leagueId,
       date,

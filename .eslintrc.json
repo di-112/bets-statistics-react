@@ -24,18 +24,24 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "simple-import-sort"
   ],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
       "extends": [
         "plugin:@typescript-eslint/recommended",
         "airbnb-typescript"
       ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": ["./tsconfig.json"]
+        "project": [
+          "./tsconfig.json"
+        ]
       },
       "plugins": [
         "react"
@@ -75,7 +81,30 @@
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": "off",
     "react/function-component-definition": "off",
-    "linebreak-style": ["error", "windows"]
+    "linebreak-style": [
+      "error",
+      "windows"
+    ],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Packages `react` related packages come first.
+          [
+            "^react",
+            "^[a-z]",
+            "^@?\\w",
+            "^\\u0000",
+            "^\\.\\.(?!/?$)",
+            "^\\.\\./?$",
+            "^\\./(?=.*/)(?!/?$)",
+            "^\\.(?!/?$)",
+            "^\\./?$",
+            "^.+\\.?(css)$"
+          ]
+        ]
+      }
+    ]
   }
 }
 

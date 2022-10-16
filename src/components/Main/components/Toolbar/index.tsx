@@ -1,20 +1,28 @@
 import React, { FC, useEffect } from 'react'
 import { Button, DatePicker, Tooltip } from 'antd'
-import {
-  CloseCircleOutlined, DeleteOutlined, PlusOutlined, SaveOutlined, ReloadOutlined,
-} from '@ant-design/icons'
 import { observer } from 'mobx-react-lite'
-import { useStore } from '../../../../store/provider'
+import {
+  CloseCircleOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+  SaveOutlined,
+} from '@ant-design/icons'
+import api from '@api';
+import { DATE_FORMAT } from '@enums';
+import { useStore } from '@store/provider'
+import { getErrorsBets, openNotification } from '@utils'
 import styles from './style.less'
-import { getErrorsBets, openNotification } from '../../../../utils'
-import api from '../../../../api';
-import { DATE_FORMAT } from '../../../../enums';
 
 interface IToolbar {
-  selected: number[]
+  selected: number[],
+  setSelected: (numbers: number[]) => void
 }
 
-const Toolbar: FC<IToolbar> = observer(({ selected }) => {
+const Toolbar: FC<IToolbar> = observer(({
+  selected,
+  setSelected,
+}) => {
   const {
     activeLeagueId,
     setBets,
@@ -95,7 +103,10 @@ const Toolbar: FC<IToolbar> = observer(({ selected }) => {
             type="danger"
             icon={(<DeleteOutlined style={{ fontSize: 13 }} />)}
             disabled={!selected.length}
-            onClick={() => deleteBets(selected)}
+            onClick={() => {
+              deleteBets(selected)
+              setSelected([])
+            }}
           />
         </Tooltip>
         <Tooltip title="Сохранить">

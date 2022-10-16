@@ -1,13 +1,13 @@
-import { DatePicker, InputNumber } from 'antd'
-import { Moment } from 'moment'
 import React from 'react'
+import { DatePicker, InputNumber } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import classnames from 'classnames/bind';
-import { BETS, DATE_FORMAT, RESULTS } from '../../../../enums'
+import { Moment } from 'moment'
+import { BETS, DATE_FORMAT, RESULTS } from '@enums'
+import { IBet, ITeam, TeamStatus } from '@types'
 import Select from '../Select'
-import TeamCell from './components/TeamCell'
 import ResultCell from './components/ResultCell'
-import { IBet, ITeam, TeamStatus } from '../../../../types'
+import TeamCell from './components/TeamCell'
 import styles from './style.less'
 
 const cn = classnames.bind(styles)

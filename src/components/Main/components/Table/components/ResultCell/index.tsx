@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
-import { RESULTS } from '../../../../../../enums'
+import { RESULTS } from '@enums'
 
 interface IResultCell {
   result: RESULTS

@@ -1,16 +1,20 @@
 import React, { FC } from 'react'
 import { Select as AntSelect } from 'antd'
-import { ITeam } from '../../../../types'
+import { ITeam } from '@types'
 
 const { Option } = AntSelect
 
 interface ISelect {
   options: ITeam[] | string[],
   onChange: (value?: string) => void,
-  className? :string
+  className: string
 }
 
-const Select: FC<ISelect> = ({ options = [], onChange = () => {}, className }) => (
+const Select: FC<ISelect> = ({
+  options = [],
+  onChange = () => {},
+  className,
+}) => (
   <AntSelect
     className={className}
     onChange={onChange}
@@ -29,12 +33,12 @@ const Select: FC<ISelect> = ({ options = [], onChange = () => {}, className }) =
           <Option value={option.name} key={option.name}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {option?.logo && (
-              <img
-                src={option.logo}
-                alt={option.name}
-                style={{ width: 20, height: 20, marginRight: 10 }}
-              />
-              ) }
+                <img
+                  src={option.logo}
+                  alt={option.name}
+                  style={{ width: 20, height: 20, marginRight: 10 }}
+                />
+              )}
               {option.name}
             </div>
           </Option>

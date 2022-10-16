@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { ITeam } from '../../../../../../types'
+import { ITeam } from '@types'
 import style from './style.less'
 
 interface ITeamCell {

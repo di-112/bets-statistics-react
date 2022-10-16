@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import classnames from 'classnames/bind'
+import { observer } from 'mobx-react-lite'
+import { useStore } from '@store/provider'
 import styles from './style.less'
-import { useStore } from '../../../../store/provider'
 
 const cn = classnames.bind(styles)
 

@@ -1,13 +1,14 @@
-import { Button, Menu as AntMenu } from 'antd'
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import React, {
   Dispatch, FC, useLayoutEffect, useState,
 } from 'react'
+import { Button, Menu as AntMenu } from 'antd'
 import { observer } from 'mobx-react-lite'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import api from '@api';
+import { LEAGUES } from '@enums';
+import { useStore } from '@store/provider'
+import { ILeague } from '@types';
 import styles from './style.less'
-import { useStore } from '../../store/provider'
-import api from '../../api';
-import { ILeague } from '../../types';
 
 interface IMenu {
   collapsed: boolean,
@@ -42,7 +43,7 @@ const Menu : FC<IMenu> = observer(({
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       />
       <AntMenu
-        defaultSelectedKeys={[leagues[0]?.name]}
+        defaultSelectedKeys={[LEAGUES[1].toString()]}
         mode="inline"
         theme="dark"
         inlineCollapsed={collapsed}

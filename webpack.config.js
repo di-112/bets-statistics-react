@@ -36,6 +36,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
+    alias: {
+      '@api': path.resolve(__dirname, 'src/api/index.ts'),
+      '@store': path.resolve(__dirname, 'src/store/'),
+      '@types': path.resolve(__dirname, 'src/types/index.ts'),
+      '@enums': path.resolve(__dirname, 'src/enums.ts'),
+      '@utils': path.resolve(__dirname, 'src/utils.ts'),
+    },
   },
   optimization: {
     splitChunks: {

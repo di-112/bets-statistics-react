@@ -1,5 +1,5 @@
 import { Moment } from 'moment'
-import { RESULTS } from '../enums'
+import { RESULTS } from '@enums'
 
 export interface ITeam {
   country: string,
