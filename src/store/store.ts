@@ -2,7 +2,9 @@ import { makeAutoObservable, reaction, runInAction } from 'mobx'
 import moment, { Moment } from 'moment';
 import api from '@api'
 import { DATE_FORMAT, LEAGUES } from '@enums'
-import { IAnalytics, IBet, ITeam } from '@types'
+import {
+  IAnalytics, IBet, ITeam,
+} from '@types'
 
 class Store {
   activeLeagueId: number = LEAGUES[1]
@@ -107,6 +109,9 @@ class Store {
     await api.deleteBet(keys, this.activeLeagueId)
     this.refreshBets()
   }
+
+  checkCellError = (record: IBet, field: string) => this.errorFields
+    .find(item => item.key === record.key)?.errors.includes(field)
 
   get unsavedBets() {
     return this.bets.filter(bet => bet.isNew)

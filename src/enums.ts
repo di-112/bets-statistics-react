@@ -26,6 +26,16 @@ export const BETS = [
   'Ф2(-1)',
 ]
 
+export enum COLUMNS {
+  date = 'date',
+  home = 'home',
+  visit = 'visit',
+  bet = 'bet',
+  quotient = 'quotient',
+  sum = 'sum',
+  result = 'result',
+}
+
 export enum RESULTS {
   win = 'Выигрыш',
   loose = 'Проигрыш',

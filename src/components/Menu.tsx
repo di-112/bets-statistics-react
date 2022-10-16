@@ -3,12 +3,32 @@ import React, {
 } from 'react'
 import { Button, Menu as AntMenu } from 'antd'
 import { observer } from 'mobx-react-lite'
+import styled from 'styled-components';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import api from '@api';
 import { LEAGUES } from '@enums';
 import { useStore } from '@store/provider'
 import { ILeague } from '@types';
-import styles from './style.less'
+
+const StyledMenu = styled.div`
+  width: 256px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+
+  .ant-menu-inline-collapsed {
+    display: none;
+  }
+
+  > .ant-btn {
+    height: ${props => (props.theme.headerHeight)};
+    margin-bottom: 0 !important;
+    border: none !important;
+    color: white !important;
+    --antd-wave-shadow-color: none !important;
+  }
+`
 
 interface IMenu {
   collapsed: boolean,
@@ -35,10 +55,9 @@ const Menu : FC<IMenu> = observer(({
   }
 
   return (
-    <div style={{ width: 256 }} className={styles.menu}>
+    <StyledMenu>
       <Button
         type="ghost"
-        className={styles.collapseButton}
         onClick={() => setCollapsed(!collapsed)}
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       />
@@ -65,7 +84,7 @@ const Menu : FC<IMenu> = observer(({
           </AntMenu.Item>
         ))}
       </AntMenu>
-    </div>
+    </StyledMenu>
   )
 })
 

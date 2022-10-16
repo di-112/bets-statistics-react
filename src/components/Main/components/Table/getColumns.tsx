@@ -1,34 +1,31 @@
 import React from 'react'
 import { DatePicker, InputNumber } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import classnames from 'classnames/bind';
+import cn from 'classnames';
 import { Moment } from 'moment'
-import { BETS, DATE_FORMAT, RESULTS } from '@enums'
-import { IBet, ITeam, TeamStatus } from '@types'
+import {
+  BETS, COLUMNS, DATE_FORMAT, RESULTS,
+} from '@enums'
+import { IBet, ITeam } from '@types'
 import Select from '../Select'
 import ResultCell from './components/ResultCell'
 import TeamCell from './components/TeamCell'
-import styles from './style.less'
-
-const cn = classnames.bind(styles)
 
 export const getColumns = (
   teams: ITeam[],
   changeBet: (key: number | string, field: string, data: any) => void,
-  errors: any,
+  checkCellError: (record: IBet, field: string) => boolean,
 ) : ColumnsType<IBet> => [
   {
     title: 'Дата',
-    dataIndex: 'date',
+    dataIndex: COLUMNS.date,
     align: 'center',
     width: '15%',
     render: (date, record) => (record.isNew
       ? (
         <DatePicker
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes('date'),
-          })}
-          onChange={(value: Moment) => changeBet(record.key, 'date', value.format(DATE_FORMAT))}
+          className={cn({ error: checkCellError(record, COLUMNS.date) })}
+          onChange={(value: Moment) => changeBet(record.key, COLUMNS.date, value.format(DATE_FORMAT))}
           format={DATE_FORMAT}
         />
       )
@@ -36,18 +33,16 @@ export const getColumns = (
   },
   {
     title: 'Матч',
-    dataIndex: TeamStatus.home,
+    dataIndex: COLUMNS.home,
     colSpan: 2,
     width: '20%',
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
         <Select
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes(TeamStatus.home),
-          })}
+          className={cn({ error: checkCellError(record, COLUMNS.home) })}
           options={teams}
-          onChange={value => changeBet(record.key, TeamStatus.home, teams.find(team => team.name === value))}
+          onChange={value => changeBet(record.key, COLUMNS.home, teams.find(team => team.name === value))}
         />
       )
       : (
@@ -55,19 +50,17 @@ export const getColumns = (
   },
   {
     title: 'Матч',
-    dataIndex: TeamStatus.visit,
+    dataIndex: COLUMNS.visit,
     width: '20%',
     colSpan: 0,
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
         <Select
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes(TeamStatus.visit),
-          })}
+          className={cn({ error: checkCellError(record, COLUMNS.visit) })}
           onChange={value => changeBet(
             record.key,
-            TeamStatus.visit,
+            COLUMNS.visit,
             teams.find(team => team.name === value),
           )}
           options={teams}
@@ -77,19 +70,17 @@ export const getColumns = (
   },
   {
     title: 'Ставка',
-    dataIndex: 'bet',
+    dataIndex: COLUMNS.bet,
     width: '10%',
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
         <Select
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes('bet'),
-          })}
+          className={cn({ error: checkCellError(record, COLUMNS.bet) })}
           options={BETS}
           onChange={value => changeBet(
             record.key,
-            'bet',
+            COLUMNS.bet,
             value,
           )}
         />
@@ -98,15 +89,13 @@ export const getColumns = (
   },
   {
     title: 'Коэф-т',
-    dataIndex: 'quotient',
+    dataIndex: COLUMNS.quotient,
     width: '10%',
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
         <InputNumber
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes('quotient'),
-          })}
+          className={cn({ error: checkCellError(record, COLUMNS.quotient) })}
           min={1}
           step={0.25}
           defaultValue={record.quotient}
@@ -114,7 +103,7 @@ export const getColumns = (
           onChange={value => {
             changeBet(
               record.key,
-              'quotient',
+              COLUMNS.quotient,
               value,
             )
           }}
@@ -124,22 +113,20 @@ export const getColumns = (
   },
   {
     title: 'Сумма',
-    dataIndex: 'sum',
+    dataIndex: COLUMNS.sum,
     width: '10%',
     align: 'center',
     render: (text, record) => (record.isNew
       ? (
         <InputNumber
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes('sum'),
-          })}
+          className={cn({ error: checkCellError(record, COLUMNS.sum) })}
           step={100}
           min={0}
           defaultValue={record.sum}
           onChange={value => {
             changeBet(
               record.key,
-              'sum',
+              COLUMNS.sum,
               value,
             )
           }}
@@ -149,18 +136,16 @@ export const getColumns = (
   },
   {
     title: 'Исход',
-    dataIndex: 'result',
+    dataIndex: COLUMNS.result,
     align: 'center',
     render: (text: string, record: IBet) => (record.isNew
       ? (
         <Select
-          className={cn({
-            error: errors.find(item => item.key === record.key)?.errors.includes('result'),
-          })}
+          className={cn({ error: checkCellError(record, COLUMNS.result) })}
           options={Object.values(RESULTS)}
           onChange={value => changeBet(
             record.key,
-            'result',
+            COLUMNS.result,
             value,
           )}
         />

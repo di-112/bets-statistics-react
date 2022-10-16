@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react'
 import { Button, DatePicker, Tooltip } from 'antd'
 import { observer } from 'mobx-react-lite'
+import styled from 'styled-components';
 import {
   CloseCircleOutlined,
   DeleteOutlined,
@@ -12,12 +13,51 @@ import api from '@api';
 import { DATE_FORMAT } from '@enums';
 import { useStore } from '@store/provider'
 import { getErrorsBets, openNotification } from '@utils'
-import styles from './style.less'
 
 interface IToolbar {
   selected: number[],
   setSelected: (numbers: number[]) => void
 }
+
+const DateContainer = styled.div``
+const ButtonContainer = styled.div``
+
+const StyledToolbar = styled.div`
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  ${DateContainer} {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+
+    .ant-picker {
+      height: 24px;
+      margin: 0 10px;
+    }
+
+    button {
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  ${ButtonContainer} {
+    button {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+
+      &:last-child {
+        margin-left: 0;
+      }
+    }
+  }
+`
 
 const Toolbar: FC<IToolbar> = observer(({
   selected,
@@ -62,26 +102,26 @@ const Toolbar: FC<IToolbar> = observer(({
   }, [date])
 
   return (
-    <div className={styles.toolbar}>
-      <div className={styles.date}>
+    <StyledToolbar>
+      <DateContainer>
         Месяц:
         <DatePicker.MonthPicker
           allowClear={false}
-          className={styles.picker}
           placeholder="Выберите месяц"
           value={date}
           onChange={setDate}
         />
         <Button
-          className={styles.showAllButton}
           disabled={!date}
           type="primary"
-          onClick={() => { setDate(null) }}
+          onClick={() => {
+            setDate(null)
+          }}
         >
           Показать все
         </Button>
-      </div>
-      <div className={styles.buttons}>
+      </DateContainer>
+      <ButtonContainer>
         <Tooltip title="Обновить">
           <Button
             type="primary"
@@ -117,8 +157,8 @@ const Toolbar: FC<IToolbar> = observer(({
             icon={<SaveOutlined style={{ fontSize: 13 }} />}
           />
         </Tooltip>
-      </div>
-    </div>
+      </ButtonContainer>
+    </StyledToolbar>
   )
 })
 
