@@ -23,33 +23,24 @@ const getBets = async (leagueId, date) => {
 
   const bets = await betsQuery()
 
-  const plus = await betsQuery()
-    .where('result', 'Выигрыш')
-    .select(knex.raw('(sum(?? * (?? - 1))) as value', ['sum', 'quotient']))
-    .first()
+  const winBets = bets.filter(bet => bet.result === 'Выигрыш')
 
-  const minus = await betsQuery()
-    .where('result', 'Проигрыш')
-    .select(knex.raw('sum(??) as value', ['sum']))
-    .first()
+  const profit = winBets.reduce((acc, bet) => acc + (bet.sum * (bet.quotient - 1)), 0)
 
-  const max = await betsQuery()
-    .max('quotient as value')
-    .first()
+  const maxQuotient = Math.max(...bets.map(bet => bet.quotient))
 
-  const betsBest = await betsQuery()
-    .where('result', 'Выигрыш')
-    .select(knex.raw('??, count(??) as ??', ['bet', 'quotient', 'count']))
-    .groupBy('bet')
-    .orderBy('count', 'desc')
+  const maxCountWins = Math.max(...winBets.reduce((acc, { bet }) => ({
+    ...acc,
+    [bet]: (acc[bet] || 0) + 1,
+  }), {}))
 
   return {
     bets,
     analytics: {
-      profit: plus.value - minus.value,
-      maxQuotient: max.value,
-      bestBets: betsBest
-        .filter(item => item.count === betsBest[0].count)
+      profit,
+      maxQuotient,
+      bestBets: winBets
+        .filter(item => item.count === maxCountWins)
         .map(item => item.bet),
     },
   }
