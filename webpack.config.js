@@ -25,7 +25,7 @@ const getCssLoaders = (extra, isModules = true) => {
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  entry: ['@babel/polyfill', './Menu.tsx'],
+  entry: ['@babel/polyfill', './index.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: getFileName('js'),
