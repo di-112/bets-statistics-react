@@ -35,7 +35,10 @@ const Menu : FC<IMenu> = observer(({
   }
 
   return (
-    <div style={{ width: 256 }} className={styles.menu}>
+    <div
+      style={{ width: 256 }}
+      className={styles.menu}
+    >
       <Button
         type="ghost"
         className={styles.collapseButton}

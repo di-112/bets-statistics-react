@@ -9,7 +9,12 @@ import Table from './components/Table'
 import Toolbar from './components/Toolbar'
 import styles from './style.less'
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
+const antIcon = (
+  <LoadingOutlined
+    style={{ fontSize: 24 }}
+    spin
+  />
+)
 
 const cn = classnames.bind(styles)
 
@@ -25,7 +30,10 @@ const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
   return (
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-    <Spin indicator={antIcon} spinning={isLoading}>
+    <Spin
+      indicator={antIcon}
+      spinning={isLoading}
+    >
       <div className={cn('main', { blur: isOpenMenu })}>
         <div className={styles.wrapper}>
           <Toolbar

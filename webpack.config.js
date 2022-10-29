@@ -13,11 +13,13 @@ const getFileName = ext => (isDev ? `[name].${ext}` : `[name].[contenthash].${ex
 const getCssLoaders = (extra, isModules = true) => {
   const loaders = [isDev ? MiniCssExtractPlugin.loader : 'style-loader', {
     loader: 'css-loader',
-    options: isModules ? {
-      modules: {
-        localIdentName: '[local]___[hash:base64:5]',
-      },
-    } : {},
+    options: isModules
+      ? {
+        modules: {
+          localIdentName: '[local]___[hash:base64:5]',
+        },
+      }
+      : {},
   }, 'postcss-loader']
   if (extra) loaders.push(extra)
   return loaders

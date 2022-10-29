@@ -25,12 +25,18 @@ const Select: FC<ISelect> = ({
     {options.map(option => (
       typeof option === 'string'
         ? (
-          <Option value={option} key={option}>
+          <Option
+            value={option}
+            key={option}
+          >
             {option}
           </Option>
         )
         : (
-          <Option value={option.name} key={option.name}>
+          <Option
+            value={option.name}
+            key={option.name}
+          >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {option?.logo && (
                 <img
