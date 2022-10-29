@@ -80,8 +80,10 @@
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": "off",
+    "react/jsx-closing-bracket-location": ["error"],
     "react/function-component-definition": "off",
     "indent": ["error", 2, {"ignoredNodes": ["JSXElement"], "SwitchCase": 1}],
+    "function-paren-newline": ["error", "consistent"],
     "react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "always" }],
     "multiline-ternary": ["error", "always-multiline"],
     "react/jsx-wrap-multilines": [ "error", {
@@ -90,7 +92,7 @@
       "return": "parens-new-line",
       "arrow": "parens-new-line",
       "condition": "parens-new-line",
-      "logical": "ignore",
+      "logical": "parens-new-line",
       "prop": "parens-new-line"
     }],
     "react/jsx-curly-brace-presence": [
