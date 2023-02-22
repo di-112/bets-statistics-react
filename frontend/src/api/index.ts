@@ -21,7 +21,7 @@ class Api {
   constructor() {
     this.API_KEY = 'acec6bb8a2949c8b4d6b774916128133'
 
-    this.BETS_URL = 'http://localhost:5050/bets'
+    this.BETS_URL = 'https://vercel.com/di-112/bets-statistics-react-backend/bets'
 
     this.axiosTeams = axios.create({
       baseURL: 'https://v3.football.api-sports.io',
