@@ -1,6 +1,6 @@
 module.exports = require('knex')({
   client: 'sqlite3',
   connection: {
-    filename: 'bets_db.sqlite3',
+    filename: require('path').resolve(__dirname, 'bets_db.sqlite3'),
   },
 })
