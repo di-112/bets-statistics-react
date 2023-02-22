@@ -99,10 +99,7 @@
       "error",
       { "props": "never", "children": "never" }
     ],
-    "linebreak-style": [
-      "error",
-      "windows"
-    ],
+    "linebreak-style": "off",
     "simple-import-sort/imports": [
       "error",
       {

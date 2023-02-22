@@ -13,14 +13,14 @@
       "@store/*": ["store/*"],
       "@types": ["types/index.ts"],
       "@enums": ["enums.ts"],
-      "@utils": ["utils.ts"],
+      "@utils": ["utils.ts"]
     }
   },
   "include": [
     "src/**/*",
-    "src/declaration.d.ts",
+    "src/declaration.d.ts"
   ],
   "exclude": [
-    "node_modules",
+    "node_modules"
   ]
 }
