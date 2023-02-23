@@ -6,8 +6,8 @@ const path = require('path')
 const port = process.env.PORT || 3000
 
 app.use(express.static('dist'))
-app.get('*', req => {
-  req.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
 })
 
 app.listen(port, error => {
