@@ -8,10 +8,11 @@ import { getColumns } from './getColumns'
 import styles from './style.less'
 
 interface ITable {
-  setSelected: Dispatch<number[]>
+  selected: IBet[],
+  setSelected: Dispatch<IBet[]>
 }
 
-const Table: FC<ITable> = observer(({ setSelected }) => {
+const Table: FC<ITable> = observer(({ setSelected, selected }) => {
   const {
     bets, teams, changeBet, errorFields,
   } = useStore()
@@ -22,7 +23,10 @@ const Table: FC<ITable> = observer(({ setSelected }) => {
   )
 
   const rowSelection = {
-    onChange: setSelected,
+    onChange: (selectedKeys, selectedData) => {
+      setSelected(selectedData)
+    },
+    selectedRowKeys: selected.map(({ key }) => key),
   }
 
   return (

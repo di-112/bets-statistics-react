@@ -25,7 +25,14 @@ const getBets = async (leagueId, date) => {
 
   const winBets = bets.filter(bet => bet.result === 'Выигрыш')
 
-  const profit = winBets.reduce((acc, bet) => acc + (bet.sum * (bet.quotient - 1)), 0)
+  const profit = bets.reduce((acc, bet) => {
+
+    if( bet.result === 'Выигрыш') {
+      return acc + (bet.sum * (bet.quotient - 1))
+    }
+
+    return acc - bet.sum
+  }, 0)
 
   const maxQuotient = Math.max(...bets.map(bet => bet.quotient))
 

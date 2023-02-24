@@ -1,4 +1,5 @@
 const express = require('express')
+const favicon = require('express-favicon')
 
 const app = express()
 const path = require('path')
@@ -6,6 +7,7 @@ const path = require('path')
 const port = process.env.PORT || 3000
 
 app.use(express.static('dist'))
+app.use(favicon(`${__dirname}/dist/favicon.png`))
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
 })

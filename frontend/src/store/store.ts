@@ -43,7 +43,7 @@ class Store {
   refreshBets = async () => {
     this.setIsLoading(true)
     const { bets, analytics } = await api.getBets(this.activeLeagueId, this.date?.format(DATE_FORMAT))
-    this.bets = bets || []
+    this.bets = (bets || [])
     this.analytics = analytics
     this.setIsLoading(false)
   }
@@ -86,7 +86,7 @@ class Store {
 
   addBet = () => {
     this.bets = [...this.bets, {
-      key: `${this.bets.length}+${this.activeLeagueId}`,
+      key: `${this.bets.length}+${this.activeLeagueId}+${Math.random()}`,
       date: null,
       home: null,
       visit: null,
@@ -103,9 +103,21 @@ class Store {
     this.bets.find(bet => bet.key === key)[field] = data
   }
 
-  deleteBets = async (keys: number[]) => {
-    await api.deleteBet(keys, this.activeLeagueId)
-    this.refreshBets()
+  deleteBets = async (rows: IBet[]) => {
+    const newRowsKey = rows.filter(row => row.isNew).map(({ key }) => key)
+    const realRowsKey = rows.filter(row => !row.isNew).map(({ key }) => key)
+
+    if (newRowsKey.length) {
+      this.bets = this.bets.filter(({ key }) => !newRowsKey.includes(key))
+    }
+
+    if (realRowsKey.length) {
+      const res = await api.deleteBet(realRowsKey, this.activeLeagueId)
+
+      if (res) {
+        this.bets = this.bets.filter(({ key }) => !realRowsKey.includes(key))
+      }
+    }
   }
 
   get unsavedBets() {

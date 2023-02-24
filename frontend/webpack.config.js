@@ -72,7 +72,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './index.html',
-      // favicon: './favicon.svg',
+      favicon: './public/favicon.png',
       cache: isDev,
     }),
     new HtmlWebpackInjectPreload({

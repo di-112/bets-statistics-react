@@ -11,12 +11,13 @@ import {
 import api from '@api';
 import { DATE_FORMAT } from '@enums';
 import { useStore } from '@store/provider'
+import { IBet } from '@types';
 import { getErrorsBets, openNotification } from '@utils'
 import styles from './style.less'
 
 interface IToolbar {
-  selected: number[],
-  setSelected: (numbers: number[]) => void
+  selected: IBet[],
+  setSelected: (rows: IBet[]) => void
 }
 
 const Toolbar: FC<IToolbar> = observer(({

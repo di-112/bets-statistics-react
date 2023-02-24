@@ -4,6 +4,7 @@ import classnames from 'classnames/bind'
 import { observer } from 'mobx-react-lite'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useStore } from '@store/provider';
+import { IBet } from '@types';
 import Statistic from './components/Statistic'
 import Table from './components/Table'
 import Toolbar from './components/Toolbar'
@@ -23,13 +24,13 @@ interface IMainContent {
 }
 
 const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
-  const [selected, setSelected] = useState<number[]>([])
+  const [selected, setSelected] = useState<IBet[]>([])
 
   const { isLoading } = useStore()
 
   return (
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <Spin
       indicator={antIcon}
       spinning={isLoading}
@@ -40,7 +41,10 @@ const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
             selected={selected}
             setSelected={setSelected}
           />
-          <Table setSelected={setSelected} />
+          <Table
+            selected={selected}
+            setSelected={setSelected}
+          />
           <Statistic />
         </div>
       </div>
