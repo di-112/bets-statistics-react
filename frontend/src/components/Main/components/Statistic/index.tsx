@@ -25,7 +25,6 @@ const Statistic: FC = observer(() => {
         })}
         >
           {profit > 0 && '+'}
-          {profit < 0 && '-'}
           {profit}
         </span>
       </div>
