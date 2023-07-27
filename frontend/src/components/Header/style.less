@@ -1,6 +1,16 @@
 @import "../../variables";
 
-.header{
-  height: @header-height;
-  background: #001529;
+.header {
+    height: @header-height;
+    background: @header-color;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 8px;
+    gap: 24px;
+
+    .email {
+        color: white;
+        font-weight: 700;
+    }
 }

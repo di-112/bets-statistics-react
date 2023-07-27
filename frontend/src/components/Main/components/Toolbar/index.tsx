@@ -2,11 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { Button, DatePicker, Tooltip } from 'antd'
 import { observer } from 'mobx-react-lite'
 import {
-  CloseCircleOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-  ReloadOutlined,
-  SaveOutlined,
+  CloseCircleOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined, SaveOutlined,
 } from '@ant-design/icons'
 import api from '@api';
 import { DATE_FORMAT } from '@enums';
@@ -25,6 +21,7 @@ const Toolbar: FC<IToolbar> = observer(({
   setSelected,
 }) => {
   const {
+    isAuth,
     activeLeagueId,
     setBets,
     addBet,
@@ -55,12 +52,15 @@ const Toolbar: FC<IToolbar> = observer(({
   }
 
   useEffect(() => {
+    if (!isAuth) {
+      return
+    }
     api.getBets(activeLeagueId, date?.format(DATE_FORMAT))
       .then(({ bets, analytics }) => {
         setAnalytics(analytics)
         setBets(bets)
       })
-  }, [date])
+  }, [date, isAuth])
 
   return (
     <div className={styles.toolbar}>
@@ -77,7 +77,9 @@ const Toolbar: FC<IToolbar> = observer(({
           className={styles.showAllButton}
           disabled={!date}
           type="primary"
-          onClick={() => { setDate(null) }}
+          onClick={() => {
+            setDate(null)
+          }}
         >
           Показать все
         </Button>

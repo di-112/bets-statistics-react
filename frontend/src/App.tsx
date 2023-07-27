@@ -5,7 +5,6 @@ import { StoreProvider } from '@store/provider'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import Main from './components/Main'
-import Menu from './components/Menu'
 import styles from './style.less'
 
 const App: FC = () => {
@@ -15,13 +14,12 @@ const App: FC = () => {
     <ConfigProvider locale={ruRU}>
       <StoreProvider>
         <div className={styles.app}>
-          <Header />
-          <Main isOpenMenu={!collapsed} />
-          <Footer />
-          <Menu
+          <Header
             collapsed={collapsed}
             setCollapsed={setCollapsed}
           />
+          <Main isOpenMenu={!collapsed} />
+          <Footer />
         </div>
       </StoreProvider>
     </ConfigProvider>

@@ -14,7 +14,10 @@ interface ITable {
 
 const Table: FC<ITable> = observer(({ setSelected, selected }) => {
   const {
-    bets, teams, changeBet, errorFields,
+    bets,
+    teams,
+    changeBet,
+    errorFields,
   } = useStore()
 
   const columns = useMemo<ColumnsType<IBet>>(

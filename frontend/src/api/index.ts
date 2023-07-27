@@ -1,11 +1,13 @@
 import { Modal } from 'antd'
 import axios, { AxiosInstance } from 'axios'
 import { LEAGUES } from '@enums'
+import { IUser } from '@types';
 
 const errorHandler = error => {
   Modal.error({
     title: 'Ошибка',
-    content: error.body.message || 'Что-то пошло не так',
+    centered: true,
+    content: error.body?.message || error.response?.data?.error || 'Что-то пошло не так',
   })
 }
 
@@ -21,7 +23,7 @@ class Api {
   constructor() {
     this.API_KEY = 'acec6bb8a2949c8b4d6b774916128133'
 
-    this.BETS_URL = 'http://195.133.48.137:5050/bets'
+    this.BETS_URL = 'http://localhost:5050'
 
     this.axiosTeams = axios.create({
       baseURL: 'https://v3.football.api-sports.io',
@@ -35,6 +37,12 @@ class Api {
       baseURL: this.BETS_URL,
     })
   }
+
+  createUser = user => this.axiosBets.post<IUser>('/registration', user)
+    .then(res => res.data).catch(errorHandler)
+
+  login = user => this.axiosBets.post<IUser>('/login', user)
+    .then(res => res.data).catch(errorHandler)
 
   getLeagues = () => {
     const savesLeagues = sessionStorage.getItem('leagues')
@@ -76,22 +84,32 @@ class Api {
       .catch(errorHandler)
   }
 
-  getBets = (leagueId = LEAGUES[1], date) => this.axiosBets.get('', {
+  getBets = (leagueId = LEAGUES[1], date) => this.axiosBets.get('/bets', {
     params: {
       leagueId,
       date,
+    },
+    headers: {
+      authorization: JSON.parse(localStorage.getItem('STORE'))?.user.token,
     },
   })
     .then(res => res.data)
     .catch(errorHandler)
 
-  saveBets = bets => this.axiosBets.post('', { bets })
+  saveBets = bets => this.axiosBets.post('/bets', { bets }, {
+    headers: {
+      authorization: JSON.parse(localStorage.getItem('STORE') || null)?.user?.token,
+    },
+  })
     .then(res => res.status).catch(errorHandler)
 
-  deleteBet = (keys, leagueId) => this.axiosBets.delete('', {
+  deleteBet = (keys, leagueId) => this.axiosBets.delete('/bets', {
     params: {
       leagueId,
       keys: [...new Set(keys)].join('_'),
+    },
+    headers: {
+      authorization: JSON.parse(localStorage.getItem('STORE') || null)?.user?.token,
     },
   })
     .then(res => res.status)

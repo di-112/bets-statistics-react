@@ -1,13 +1,28 @@
-import { makeAutoObservable, reaction, runInAction } from 'mobx'
+import {
+  autorun, extendObservable, makeAutoObservable, reaction, runInAction, toJS,
+} from 'mobx'
 import moment, { Moment } from 'moment';
 import api from '@api'
 import { DATE_FORMAT, LEAGUES } from '@enums'
-import { IAnalytics, IBet, ITeam } from '@types'
+import {
+  IAnalytics, IBet, ITeam, IUser,
+} from '@types'
+
+function autoSave(store) {
+  let firstRun = true;
+  autorun(() => {
+    const json = JSON.stringify(toJS(store));
+    if (!firstRun) {
+      localStorage.setItem('STORE', json)
+    }
+    firstRun = false;
+  });
+}
 
 class Store {
   activeLeagueId: number = LEAGUES[1]
 
-  teams : ITeam[] = []
+  teams: ITeam[] = []
 
   bets: IBet[] = []
 
@@ -25,12 +40,25 @@ class Store {
 
   errorFields = []
 
+  user: IUser = null
+
   constructor() {
-    makeAutoObservable(this)
+    const savedStore = localStorage.getItem('STORE')
+
+    if (savedStore) {
+      const jsonSavedStore = JSON.parse(savedStore)
+
+      jsonSavedStore.date = moment(jsonSavedStore.date)
+
+      extendObservable(this, jsonSavedStore);
+    } else {
+      makeAutoObservable(this)
+    }
+
+    autoSave(this)
 
     runInAction(async () => {
       this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-      this.refreshBets()
     })
 
     reaction(() => this.activeLeagueId, async () => {
@@ -58,6 +86,10 @@ class Store {
 
   setDate = date => {
     this.date = date
+  }
+
+  setUser = user => {
+    this.user = user
   }
 
   setIsUnsaved = bool => {
@@ -99,7 +131,7 @@ class Store {
     }]
   }
 
-  changeBet = (key: number | string, field: string, data: any) : void => {
+  changeBet = (key: number | string, field: string, data: any): void => {
     this.bets.find(bet => bet.key === key)[field] = data
   }
 
@@ -122,6 +154,10 @@ class Store {
 
   get unsavedBets() {
     return this.bets.filter(bet => bet.isNew)
+  }
+
+  get isAuth() {
+    return !!this.user
   }
 }
 

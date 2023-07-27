@@ -1,13 +1,14 @@
 import React, { FC, useState } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Spin } from 'antd'
 import classnames from 'classnames/bind'
 import { observer } from 'mobx-react-lite'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useStore } from '@store/provider';
 import { IBet } from '@types';
-import Statistic from './components/Statistic'
-import Table from './components/Table'
-import Toolbar from './components/Toolbar'
+import Content from './components/Content';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
 import styles from './style.less'
 
 const antIcon = (
@@ -28,6 +29,23 @@ const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
 
   const { isLoading } = useStore()
 
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Content
+        selected={selected}
+        setSelected={setSelected}
+      />,
+    }, {
+      path: '/auth',
+      element: <LoginForm />,
+    },
+    {
+      path: '/registration',
+      element: <RegistrationForm />,
+    },
+  ]);
+
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -36,17 +54,7 @@ const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
       spinning={isLoading}
     >
       <div className={cn('main', { blur: isOpenMenu })}>
-        <div className={styles.wrapper}>
-          <Toolbar
-            selected={selected}
-            setSelected={setSelected}
-          />
-          <Table
-            selected={selected}
-            setSelected={setSelected}
-          />
-          <Statistic />
-        </div>
+        <RouterProvider router={router} />
       </div>
     </Spin>
   )

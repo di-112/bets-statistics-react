@@ -79,7 +79,11 @@ module.exports = {
       files: [
         {
           match: /.*\.woff2$/,
-          attributes: { as: 'font', type: 'font/woff2', crossorigin: true },
+          attributes: {
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: true,
+          },
         },
         {
           match: /.*\.(png|jpg|gif|mp3|svg)$/,

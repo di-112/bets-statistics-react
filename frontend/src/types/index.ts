@@ -38,3 +38,9 @@ export enum TeamStatus {
   visit = 'visit',
   home = 'home',
 }
+
+export interface IUser {
+  login: string,
+  email: string,
+  token: string
+}
