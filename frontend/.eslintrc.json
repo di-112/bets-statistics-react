@@ -1,125 +1,157 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "google",
-    "airbnb"
-  ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
     },
-    "requireConfigFile": false,
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "plugins": [
-    "react",
-    "simple-import-sort"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
-      "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "airbnb-typescript"
-      ],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "project": [
-          "./tsconfig.json"
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "google",
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "requireConfigFile": false,
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "simple-import-sort"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "*.ts",
+                "*.tsx"
+            ],
+            "extends": [
+                "plugin:@typescript-eslint/recommended",
+                "airbnb-typescript"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "project": [
+                    "./tsconfig.json"
+                ]
+            },
+            "plugins": [
+                "react"
+            ],
+            "rules": {
+                "@typescript-eslint/semi": "off",
+                "@typescript-eslint/default-param-last": "off",
+                "@typescript-eslint/indent": [
+                    "error",
+                    4
+                ]
+            }
+        }
+    ],
+    "rules": {
+        "max-len": [
+            "error",
+            {
+                "code": 120
+            }
+        ],
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "semi": [
+            "error",
+            "never"
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "no-shadow": "off",
+        "react/button-has-type": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "default-param-last": "off",
+        "react/no-array-index-key": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "import/prefer-default-export": "off",
+        "react/jsx-filename-extension": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/jsx-closing-bracket-location": [
+            "error"
+        ],
+        "react/function-component-definition": "off",
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "function-paren-newline": [
+            "error",
+            "consistent"
+        ],
+        "react/jsx-max-props-per-line": [
+            "error",
+            {
+                "maximum": 1,
+                "when": "always"
+            }
+        ],
+        "multiline-ternary": [
+            "error",
+            "always-multiline"
+        ],
+        "react/jsx-wrap-multilines": [
+            "error",
+            {
+                "declaration": "parens-new-line",
+                "assignment": "parens-new-line",
+                "return": "parens-new-line",
+                "arrow": "parens-new-line",
+                "condition": "parens-new-line",
+                "logical": "parens-new-line",
+                "prop": "parens-new-line"
+            }
+        ],
+        "react/jsx-curly-brace-presence": [
+            "error",
+            {
+                "props": "never",
+                "children": "never"
+            }
+        ],
+        "linebreak-style": "off",
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    // Packages `react` related packages come first.
+                    [
+                        "^react",
+                        "^[a-z]",
+                        "^@?\\w",
+                        "^\\u0000",
+                        "^\\.\\.(?!/?$)",
+                        "^\\.\\./?$",
+                        "^\\./(?=.*/)(?!/?$)",
+                        "^\\.(?!/?$)",
+                        "^\\./?$",
+                        "^.+\\.?(css)$"
+                    ]
+                ]
+            }
         ]
-      },
-      "plugins": [
-        "react"
-      ],
-      "rules": {
-        "@typescript-eslint/semi": "off",
-        "@typescript-eslint/default-param-last": "off"
-      }
     }
-  ],
-  "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 120
-      }
-    ],
-    "arrow-parens": [
-      "error",
-      "as-needed"
-    ],
-    "semi": [
-      "error",
-      "never"
-    ],
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
-    "no-shadow": "off",
-    "react/button-has-type": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "default-param-last": "off",
-    "react/no-array-index-key": "off",
-    "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "import/prefer-default-export": "off",
-    "react/jsx-filename-extension": "off",
-    "react/jsx-closing-bracket-location": ["error"],
-    "react/function-component-definition": "off",
-    "indent": ["error", 2, {"ignoredNodes": ["JSXElement"], "SwitchCase": 1}],
-    "function-paren-newline": ["error", "consistent"],
-    "react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "always" }],
-    "multiline-ternary": ["error", "always-multiline"],
-    "react/jsx-wrap-multilines": [ "error", {
-      "declaration": "parens-new-line",
-      "assignment": "parens-new-line",
-      "return": "parens-new-line",
-      "arrow": "parens-new-line",
-      "condition": "parens-new-line",
-      "logical": "parens-new-line",
-      "prop": "parens-new-line"
-    }],
-    "react/jsx-curly-brace-presence": [
-      "error",
-      { "props": "never", "children": "never" }
-    ],
-    "linebreak-style": "off",
-    "simple-import-sort/imports": [
-      "error",
-      {
-        "groups": [
-          // Packages `react` related packages come first.
-          [
-            "^react",
-            "^[a-z]",
-            "^@?\\w",
-            "^\\u0000",
-            "^\\.\\.(?!/?$)",
-            "^\\.\\./?$",
-            "^\\./(?=.*/)(?!/?$)",
-            "^\\.(?!/?$)",
-            "^\\./?$",
-            "^.+\\.?(css)$"
-          ]
-        ]
-      }
-    ]
-  }
 }
 

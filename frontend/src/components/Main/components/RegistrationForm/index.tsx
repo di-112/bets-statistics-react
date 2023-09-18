@@ -1,79 +1,49 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, Input } from 'antd'
 import api from '@api';
+import StartUserForm from '@common/components/StartUserForm';
+import Button from '@common/ui/Button';
 import { useStore } from '@store/provider';
-import styles from './style.less'
+import { fields } from './resources/fields';
 
 interface ILoginFormValues {
-  email: string,
-  password: string
+    email: string,
+    password: string
 }
 
 const RegistrationForm = () => {
-  const { setUser } = useStore()
+    const { setUser } = useStore()
 
-  const navigate = useNavigate()
+    const navigate = useNavigate()
 
-  const onFinish = async (values: ILoginFormValues) => {
-    const user = await api.createUser(values)
+    const onFinish = async (values: ILoginFormValues) => {
+        const user = await api.createUser(values)
 
-    if (user) {
-      setUser(user)
-      navigate('/')
-    }
-  };
+        if (user) {
+            setUser(user)
+            navigate('/')
+        }
+    };
 
-  return (
-    <Form
-      className={styles.form}
-      name="bets_login"
-      labelCol={{ span: 4 }}
-      wrapperCol={{ span: 20 }}
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      labelAlign="right"
-    >
-      <Form.Item
-        label="Логин"
-        name="login"
-        rules={[{ required: true, message: 'Пожалуйста, введите login' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[{ required: true, message: 'Пожалуйста, введите email' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Пароль"
-        name="password"
-        rules={[{ required: true, message: 'Пожалуйста, введите пароль' }]}
-      >
-        <Input.Password />
-      </Form.Item>
-      <Form.Item
-        wrapperCol={{ span: 24 }}
-        className={styles.buttonWrapper}
-      >
-        <Button
-          type="link"
-          onClick={() => navigate('/auth')}
-        >
-          Войти
-        </Button>
-        <Button
-          type="primary"
-          htmlType="submit"
-        >
-          Зарегистрироваться
-        </Button>
-      </Form.Item>
-    </Form>
-  );
+    return (
+        <StartUserForm
+            onFinish={onFinish}
+            fields={fields}
+            footer={(
+                <>
+                    <Button
+                        type="link"
+                        onClick={() => navigate('/auth')}
+                    >
+                        Войти
+                    </Button>
+                    <Button htmlType="submit">
+                        Зарегистрироваться
+                    </Button>
+                </>
+            )}
+        />
+    )
 };
 
 export default RegistrationForm;

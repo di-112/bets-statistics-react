@@ -1,5 +1,5 @@
 import React, {
-  Dispatch, FC, useLayoutEffect, useState,
+    Dispatch, FC, useLayoutEffect, useState,
 } from 'react'
 import { Button, Menu as AntMenu } from 'antd'
 import { observer } from 'mobx-react-lite'
@@ -11,65 +11,62 @@ import { ILeague } from '@types';
 import styles from './style.less'
 
 interface IMenu {
-  collapsed: boolean,
-  setCollapsed: Dispatch<boolean>
+    collapsed: boolean,
+    setCollapsed: Dispatch<boolean>
 }
 
-const Menu : FC<IMenu> = observer(({
-  collapsed,
-  setCollapsed,
+const Menu: FC<IMenu> = observer(({
+    collapsed,
+    setCollapsed,
 }) => {
-  const { setActiveLeagueId } = useStore()
+    const { setActiveLeagueId } = useStore()
 
-  const [leagues, setLeagues] = useState<ILeague[]>([])
+    const [leagues, setLeagues] = useState<ILeague[]>([])
 
-  useLayoutEffect(() => {
-    if (!leagues.length) {
-      api.getLeagues().then(setLeagues)
+    useLayoutEffect(() => {
+        if (!leagues.length) {
+            api.getLeagues().then(setLeagues)
+        }
+    }, [])
+
+    const onSelect = item => {
+        setActiveLeagueId(item.key)
+        setCollapsed(true)
     }
-  }, [])
 
-  const onSelect = item => {
-    setActiveLeagueId(item.key)
-    setCollapsed(true)
-  }
-
-  return (
-    <div
-      style={{ width: 256 }}
-      className={styles.menu}
-    >
-      <Button
-        type="ghost"
-        className={styles.collapseButton}
-        onClick={() => setCollapsed(!collapsed)}
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      />
-      <AntMenu
-        defaultSelectedKeys={[LEAGUES[1].toString()]}
-        mode="inline"
-        theme="dark"
-        inlineCollapsed={collapsed}
-        onSelect={onSelect}
-      >
-        {leagues.map(({ name, logo, id }) => (
-          <AntMenu.Item key={id}>
-            <img
-              alt={name}
-              style={{
-                width: 24,
-                height: 24,
-                marginRight: 8,
-              }}
-              src={logo}
+    return (
+        <div className={styles.menu}>
+            <Button
+                type="ghost"
+                className={styles.collapseButton}
+                onClick={() => setCollapsed(!collapsed)}
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             />
-            {' '}
-            {name}
-          </AntMenu.Item>
-        ))}
-      </AntMenu>
-    </div>
-  )
+            <AntMenu
+                defaultSelectedKeys={[LEAGUES[1].toString()]}
+                mode="inline"
+                theme="dark"
+                inlineCollapsed={collapsed}
+                onSelect={onSelect}
+            >
+                {leagues.map(({ name, logo, id }) => (
+                    <AntMenu.Item key={id}>
+                        <img
+                            alt={name}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                marginRight: 8,
+                            }}
+                            src={logo}
+                        />
+                        {' '}
+                        {name}
+                    </AntMenu.Item>
+                ))}
+            </AntMenu>
+        </div>
+    )
 })
 
 export default Menu

@@ -11,6 +11,10 @@ const errorHandler = error => {
   })
 }
 
+const getRequestHeaders = () => ({
+  authorization: JSON.parse(localStorage.getItem('STORE'))?.user.token,
+})
+
 class Api {
   API_KEY: string
 
@@ -89,17 +93,13 @@ class Api {
       leagueId,
       date,
     },
-    headers: {
-      authorization: JSON.parse(localStorage.getItem('STORE'))?.user.token,
-    },
+    headers: getRequestHeaders(),
   })
     .then(res => res.data)
     .catch(errorHandler)
 
   saveBets = bets => this.axiosBets.post('/bets', { bets }, {
-    headers: {
-      authorization: JSON.parse(localStorage.getItem('STORE') || null)?.user?.token,
-    },
+    headers: getRequestHeaders(),
   })
     .then(res => res.status).catch(errorHandler)
 
@@ -108,9 +108,7 @@ class Api {
       leagueId,
       keys: [...new Set(keys)].join('_'),
     },
-    headers: {
-      authorization: JSON.parse(localStorage.getItem('STORE') || null)?.user?.token,
-    },
+    headers: getRequestHeaders(),
   })
     .then(res => res.status)
     .catch(errorHandler)

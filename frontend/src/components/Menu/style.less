@@ -1,20 +1,21 @@
 @import "../../variables";
 
 .menu {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 10;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 256px;
 
-  :global(.ant-menu-inline-collapsed){
-    display: none;
-  }
+    :global(.ant-menu-inline-collapsed) {
+        display: none;
+    }
 
-  .collapseButton {
-    height: @header-height;
-    margin-bottom: 0 !important;
-    border: none !important;
-    color: white !important;
-    --antd-wave-shadow-color: none !important;
-  }
+    .collapseButton {
+        height: @header-height;
+        margin-bottom: 0 !important;
+        border: none !important;
+        color: white !important;
+        --antd-wave-shadow-color: none !important;
+    }
 }
