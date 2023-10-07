@@ -20,6 +20,8 @@ const Table: FC<ITable> = observer(({ setSelected, selected }) => {
         errorFields,
     } = useStore()
 
+    console.log({ errorFields })
+
     const columns = useMemo<ColumnsType<IBet>>(
         () => getColumns(teams, changeBet, errorFields),
         [teams, changeBet, errorFields],

@@ -39,8 +39,29 @@ export enum TeamStatus {
     home = 'home',
 }
 
+export interface IErrorField {
+    errors: (keyof IBet)[],
+    success: boolean,
+    key: string
+}
+
 export interface IUser {
     login: string,
     email: string,
     token: string
+}
+
+export type TypeChangeBet = <T extends keyof IBet>(key: number | string, field: T, data: IBet[T]) => void
+
+export interface IBetsSlice {
+    activeLeagueId: number,
+    teams: ITeam[],
+    bets: IBet[],
+    isLoading: boolean,
+    isOpenMenu: boolean,
+    date: Moment,
+    analytics: IAnalytics,
+    isUnsaved: boolean,
+    errorFields: IErrorField[],
+    user: null
 }

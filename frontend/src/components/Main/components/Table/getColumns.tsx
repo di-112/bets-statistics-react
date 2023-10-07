@@ -3,19 +3,27 @@ import { DatePicker, InputNumber } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import classnames from 'classnames/bind';
 import { Moment } from 'moment'
-import { BETS, DATE_FORMAT, RESULTS } from '@enums'
-import { IBet, ITeam, TeamStatus } from '@types'
+import { BETS, DATE_FORMAT } from '@enums'
+import {
+    IBet, IErrorField, ITeam, TeamStatus, TypeChangeBet,
+} from '@types'
 import Select from '../Select'
-import ResultCell from './components/ResultCell'
+import { renderResultCell } from './components/ResultCell'
 import TeamCell from './components/TeamCell'
 import styles from './style.less'
 
 const cn = classnames.bind(styles)
 
+const isError = (
+    errors: IErrorField[],
+    rowKey: IBet['key'],
+    column: keyof IBet,
+) => errors.find(item => item.key === rowKey)?.errors.includes(column)
+
 export const getColumns = (
     teams: ITeam[],
-    changeBet: (key: number | string, field: string, data: any) => void,
-    errors: any,
+    changeBet: TypeChangeBet,
+    errors: IErrorField[],
 ): ColumnsType<IBet> => [
     {
         title: 'Дата',
@@ -28,7 +36,7 @@ export const getColumns = (
                     className={cn({
                         error: errors.find(item => item.key === record.key)?.errors.includes('date'),
                     })}
-                    onChange={(value: Moment) => changeBet(record.key, 'date', value.format(DATE_FORMAT))}
+                    onChange={(value: Moment) => changeBet(record.key, 'date', value)}
                     format={DATE_FORMAT}
                 />
             )
@@ -151,20 +159,10 @@ export const getColumns = (
         title: 'Исход',
         dataIndex: 'result',
         align: 'center',
-        render: (text: string, record: IBet) => (record.isNew
-            ? (
-                <Select
-                    className={cn({
-                        error: errors.find(item => item.key === record.key)?.errors.includes('result'),
-                    })}
-                    options={Object.values(RESULTS)}
-                    onChange={value => changeBet(
-                        record.key,
-                        'result',
-                        value,
-                    )}
-                />
-            )
-            : <ResultCell result={record.result} />),
+        render: (_, record) => renderResultCell(
+            record,
+            changeBet,
+            cn({ error: isError(errors, record.key, 'result') }),
+        ),
     },
 ]

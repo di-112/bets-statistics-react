@@ -1,164 +1,170 @@
 import {
-  autorun, extendObservable, makeAutoObservable, reaction, runInAction, toJS,
+    autorun, extendObservable, makeAutoObservable, reaction, runInAction, toJS,
 } from 'mobx'
 import moment, { Moment } from 'moment';
 import api from '@api'
 import { DATE_FORMAT, LEAGUES } from '@enums'
 import {
-  IAnalytics, IBet, ITeam, IUser,
+    IAnalytics, IBet, IErrorField, ITeam, IUser,
 } from '@types'
 
 function autoSave(store) {
-  let firstRun = true;
-  autorun(() => {
-    const json = JSON.stringify(toJS(store));
-    if (!firstRun) {
-      localStorage.setItem('STORE', json)
-    }
-    firstRun = false;
-  });
+    let firstRun = true;
+    autorun(() => {
+        const json = JSON.stringify(toJS(store));
+        if (!firstRun) {
+            localStorage.setItem('STORE', json)
+        }
+        firstRun = false;
+    });
 }
 
 class Store {
-  activeLeagueId: number = LEAGUES[1]
+    activeLeagueId: number = LEAGUES[1]
 
-  teams: ITeam[] = []
+    teams: ITeam[] = []
 
-  bets: IBet[] = []
+    bets: IBet[] = []
 
-  isLoading = false
+    isLoading = false
 
-  date: Moment = moment()
+    isOpenMenu = false
 
-  analytics: IAnalytics = {
-    profit: 0,
-    bestBets: [],
-    maxQuotient: 1,
-  }
+    date: Moment = moment()
 
-  isUnsaved = false
-
-  errorFields = []
-
-  user: IUser = null
-
-  constructor() {
-    const savedStore = localStorage.getItem('STORE')
-
-    if (savedStore) {
-      const jsonSavedStore = JSON.parse(savedStore)
-
-      jsonSavedStore.date = moment(jsonSavedStore.date)
-
-      extendObservable(this, jsonSavedStore);
-    } else {
-      makeAutoObservable(this)
+    analytics: IAnalytics = {
+        profit: 0,
+        bestBets: [],
+        maxQuotient: 1,
     }
 
-    autoSave(this)
+    isUnsaved = false
 
-    runInAction(async () => {
-      this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-    })
+    errorFields: IErrorField[] = []
 
-    reaction(() => this.activeLeagueId, async () => {
-      this.date = moment()
-      this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
-      this.refreshBets()
-    })
-  }
+    user: IUser = null
 
-  refreshBets = async () => {
-    this.setIsLoading(true)
-    const { bets, analytics } = await api.getBets(this.activeLeagueId, this.date?.format(DATE_FORMAT))
-    this.bets = (bets || [])
-    this.analytics = analytics
-    this.setIsLoading(false)
-  }
+    constructor() {
+        const savedStore = localStorage.getItem('STORE')
 
-  setAnalytics = analytics => {
-    this.analytics = analytics
-  }
+        if (savedStore) {
+            const jsonSavedStore = JSON.parse(savedStore)
 
-  setIsLoading = bool => {
-    this.isLoading = bool
-  }
+            jsonSavedStore.date = moment()
 
-  setDate = date => {
-    this.date = date
-  }
+            extendObservable(this, jsonSavedStore);
+        } else {
+            makeAutoObservable(this)
+        }
 
-  setUser = user => {
-    this.user = user
-  }
+        autoSave(this)
 
-  setIsUnsaved = bool => {
-    this.isUnsaved = bool
-  }
+        runInAction(async () => {
+            this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
+        })
 
-  setErrorField = fields => {
-    this.errorFields = fields
-  }
-
-  setActiveLeagueId = id => {
-    this.activeLeagueId = id
-  }
-
-  setBets = bets => {
-    this.bets = bets
-  }
-
-  onSave = async () => {
-    await api.saveBets(this.unsavedBets.map(bet => {
-      const { key, isNew, ...rest } = bet
-      return rest
-    }))
-    this.refreshBets()
-  }
-
-  addBet = () => {
-    this.bets = [...this.bets, {
-      key: `${this.bets.length}+${this.activeLeagueId}+${Math.random()}`,
-      date: null,
-      home: null,
-      visit: null,
-      bet: '',
-      quotient: null,
-      sum: 0,
-      result: null,
-      leagueId: this.activeLeagueId,
-      isNew: true,
-    }]
-  }
-
-  changeBet = (key: number | string, field: string, data: any): void => {
-    this.bets.find(bet => bet.key === key)[field] = data
-  }
-
-  deleteBets = async (rows: IBet[]) => {
-    const newRowsKey = rows.filter(row => row.isNew).map(({ key }) => key)
-    const realRowsKey = rows.filter(row => !row.isNew).map(({ key }) => key)
-
-    if (newRowsKey.length) {
-      this.bets = this.bets.filter(({ key }) => !newRowsKey.includes(key))
+        reaction(() => this.activeLeagueId, async () => {
+            this.date = moment()
+            this.teams = await api.getTeamsOfLeague(this.activeLeagueId)
+            this.refreshBets()
+        })
     }
 
-    if (realRowsKey.length) {
-      const res = await api.deleteBet(realRowsKey, this.activeLeagueId)
-
-      if (res) {
-        this.bets = this.bets.filter(({ key }) => !realRowsKey.includes(key))
-      }
+    refreshBets = async () => {
+        this.setIsLoading(true)
+        const { bets, analytics } = await api.getBets(this.activeLeagueId, this.date?.format(DATE_FORMAT))
+        this.bets = (bets || [])
+        this.analytics = analytics
+        this.setIsLoading(false)
     }
-  }
 
-  get unsavedBets() {
-    return this.bets.filter(bet => bet.isNew)
-  }
+    setAnalytics = analytics => {
+        this.analytics = analytics
+    }
 
-  get isAuth() {
-    return !!this.user
-  }
+    setIsOpenMenu = bool => {
+        this.isOpenMenu = bool
+    }
+
+    setIsLoading = bool => {
+        this.isLoading = bool
+    }
+
+    setDate = date => {
+        this.date = date
+    }
+
+    setUser = user => {
+        this.user = user
+    }
+
+    setIsUnsaved = bool => {
+        this.isUnsaved = bool
+    }
+
+    setErrorField = fields => {
+        this.errorFields = fields
+    }
+
+    setActiveLeagueId = id => {
+        this.activeLeagueId = id
+    }
+
+    setBets = bets => {
+        this.bets = bets
+    }
+
+    onSave = async () => {
+        await api.saveBets(this.unsavedBets.map(bet => {
+            const { key, isNew, ...rest } = bet
+            return rest
+        }))
+        this.refreshBets()
+    }
+
+    addBet = () => {
+        this.bets = [...this.bets, {
+            key: `${this.bets.length}+${this.activeLeagueId}+${Math.random()}`,
+            date: null,
+            home: null,
+            visit: null,
+            bet: '',
+            quotient: null,
+            sum: 0,
+            result: null,
+            leagueId: this.activeLeagueId,
+            isNew: true,
+        }]
+    }
+
+    changeBet = <T extends keyof IBet>(key: number | string, field: T, data: IBet[T]): void => {
+        this.bets.find(bet => bet.key === key)[field] = data
+    }
+
+    deleteBets = async (rows: IBet[]) => {
+        const newRowsKey = rows.filter(row => row.isNew).map(({ key }) => key)
+        const realRowsKey = rows.filter(row => !row.isNew).map(({ key }) => key)
+
+        if (newRowsKey.length) {
+            this.bets = this.bets.filter(({ key }) => !newRowsKey.includes(key))
+        }
+
+        if (realRowsKey.length) {
+            const res = await api.deleteBet(realRowsKey, this.activeLeagueId)
+
+            if (res) {
+                this.bets = this.bets.filter(({ key }) => !realRowsKey.includes(key))
+            }
+        }
+    }
+
+    get unsavedBets() {
+        return this.bets.filter(bet => bet.isNew)
+    }
+
+    get isAuth() {
+        return !!this.user
+    }
 }
 
 export default new Store()

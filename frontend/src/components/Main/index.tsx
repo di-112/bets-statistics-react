@@ -11,10 +11,6 @@ import styles from './style.less'
 
 const cn = classnames.bind(styles)
 
-interface IMainContent {
-    isOpenMenu: boolean
-}
-
 const router = createBrowserRouter([
     {
         path: '/',
@@ -29,8 +25,11 @@ const router = createBrowserRouter([
     },
 ]);
 
-const MainContent: FC<IMainContent> = observer(({ isOpenMenu }) => {
-    const { isLoading } = useStore()
+const MainContent: FC = observer(() => {
+    const {
+        isLoading,
+        isOpenMenu,
+    } = useStore()
 
     return (
         <Loader isLoading={isLoading}>

@@ -1,6 +1,4 @@
-import React, {
-    Dispatch, FC, useLayoutEffect, useState,
-} from 'react'
+import React, { FC, useLayoutEffect, useState } from 'react'
 import { Button, Menu as AntMenu } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
@@ -10,16 +8,12 @@ import { useStore } from '@store/provider'
 import { ILeague } from '@types';
 import styles from './style.less'
 
-interface IMenu {
-    collapsed: boolean,
-    setCollapsed: Dispatch<boolean>
-}
-
-const Menu: FC<IMenu> = observer(({
-    collapsed,
-    setCollapsed,
-}) => {
-    const { setActiveLeagueId } = useStore()
+const Menu: FC = observer(() => {
+    const {
+        setActiveLeagueId,
+        isOpenMenu,
+        setIsOpenMenu,
+    } = useStore()
 
     const [leagues, setLeagues] = useState<ILeague[]>([])
 
@@ -31,7 +25,7 @@ const Menu: FC<IMenu> = observer(({
 
     const onSelect = item => {
         setActiveLeagueId(item.key)
-        setCollapsed(true)
+        setIsOpenMenu(false)
     }
 
     return (
@@ -39,14 +33,14 @@ const Menu: FC<IMenu> = observer(({
             <Button
                 type="ghost"
                 className={styles.collapseButton}
-                onClick={() => setCollapsed(!collapsed)}
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => setIsOpenMenu(!isOpenMenu)}
+                icon={!isOpenMenu ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             />
             <AntMenu
                 defaultSelectedKeys={[LEAGUES[1].toString()]}
                 mode="inline"
                 theme="dark"
-                inlineCollapsed={collapsed}
+                inlineCollapsed={!isOpenMenu}
                 onSelect={onSelect}
             >
                 {leagues.map(({ name, logo, id }) => (
