@@ -42,7 +42,7 @@ module.exports = {
       '@api': path.resolve(__dirname, 'src/api/index.ts'),
       '@store': path.resolve(__dirname, 'src/store/'),
       '@common': path.resolve(__dirname, 'src/common/'),
-      '@types': path.resolve(__dirname, 'src/types/index.ts'),
+      '@types': path.resolve(__dirname, 'src/types.ts'),
       '@enums': path.resolve(__dirname, 'src/enums.ts'),
       '@utils': path.resolve(__dirname, 'src/utils.ts'),
     },

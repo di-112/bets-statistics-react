@@ -4,6 +4,7 @@ import api from '@api';
 import StartUserForm from '@common/components/StartUserForm';
 import Button from '@common/ui/Button';
 import { useStore } from '@store/provider';
+import { AppRoutes } from '../../../../types';
 import { fields } from './resources/fields';
 
 interface ILoginFormValues {
@@ -33,7 +34,7 @@ const RegistrationForm = () => {
                 <>
                     <Button
                         type="link"
-                        onClick={() => navigate('/auth')}
+                        onClick={() => navigate(AppRoutes.AUTH)}
                     >
                         Войти
                     </Button>

@@ -5,7 +5,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import api from '@api';
 import { LEAGUES } from '@enums';
 import { useStore } from '@store/provider'
-import { ILeague } from '@types';
+import { ILeague } from '../../types';
 import styles from './style.less'
 
 const Menu: FC = observer(() => {

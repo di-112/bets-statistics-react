@@ -1,31 +1,20 @@
-import React, { Dispatch, FC, useMemo } from 'react'
+import React, { Dispatch, FC } from 'react'
 import { Table as AntTable } from 'antd'
-import { ColumnsType } from 'antd/es/table'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@store/provider'
-import { IBet } from '@types';
-import { getColumns } from './getColumns'
+import { IBet } from '../../../../types';
+import { columns } from './resources/columns'
 import styles from './style.less'
 
-interface ITable {
+interface TableProps {
     selected: IBet[],
     setSelected: Dispatch<IBet[]>
 }
 
-const Table: FC<ITable> = observer(({ setSelected, selected }) => {
+const Table: FC<TableProps> = observer(({ setSelected, selected }) => {
     const {
         bets,
-        teams,
-        changeBet,
-        errorFields,
     } = useStore()
-
-    console.log({ errorFields })
-
-    const columns = useMemo<ColumnsType<IBet>>(
-        () => getColumns(teams, changeBet, errorFields),
-        [teams, changeBet, errorFields],
-    )
 
     const rowSelection = {
         onChange: (selectedKeys, selectedData) => {

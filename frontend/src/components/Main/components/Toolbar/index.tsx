@@ -8,8 +8,8 @@ import api from '@api';
 import Button from '@common/ui/Button';
 import { DATE_FORMAT } from '@enums';
 import { useStore } from '@store/provider'
-import { IBet } from '@types';
 import { getErrorsBets, openNotification } from '@utils'
+import { IBet } from '../../../../types';
 import styles from './style.less'
 
 interface IToolbar {

@@ -4,9 +4,10 @@ import api from '@api';
 import StartUserForm from '@common/components/StartUserForm';
 import Button from '@common/ui/Button';
 import { useStore } from '@store/provider';
+import { AppRoutes } from '../../../../types';
 import { fields } from './resources/fields';
 
-interface ILoginFormValues {
+interface LoginFormValues {
     email: string,
     password: string
 }
@@ -16,7 +17,7 @@ const LoginForm = () => {
 
     const navigate = useNavigate()
 
-    const onFinish = async (values: ILoginFormValues) => {
+    const onFinish = async (values: LoginFormValues) => {
         const user = await api.login(values)
 
         if (user) {
@@ -33,7 +34,7 @@ const LoginForm = () => {
                 <>
                     <Button
                         type="link"
-                        onClick={() => navigate('/registration')}
+                        onClick={() => navigate(AppRoutes.REGISTRATION)}
                     >
                         Создать аккаунт
                     </Button>

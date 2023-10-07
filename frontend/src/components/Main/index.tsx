@@ -4,6 +4,7 @@ import classnames from 'classnames/bind'
 import { observer } from 'mobx-react-lite'
 import Loader from '@common/ui/Loader';
 import { useStore } from '@store/provider';
+import { AppRoutes } from '../../types';
 import Content from './components/Content';
 import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
@@ -13,14 +14,14 @@ const cn = classnames.bind(styles)
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: AppRoutes.MAIN,
         element: <Content />,
     }, {
-        path: '/auth',
+        path: AppRoutes.AUTH,
         element: <LoginForm />,
     },
     {
-        path: '/registration',
+        path: AppRoutes.REGISTRATION,
         element: <RegistrationForm />,
     },
 ]);

@@ -53,6 +53,14 @@ export interface IUser {
 
 export type TypeChangeBet = <T extends keyof IBet>(key: number | string, field: T, data: IBet[T]) => void
 
+export type Columns = Omit<IBet, 'key' | 'leagueId' | 'isNew'>
+
+export enum AppRoutes {
+    AUTH = '/auth',
+    REGISTRATION = '/registration',
+    MAIN = '/',
+}
+
 export interface IBetsSlice {
     activeLeagueId: number,
     teams: ITeam[],
@@ -64,4 +72,15 @@ export interface IBetsSlice {
     isUnsaved: boolean,
     errorFields: IErrorField[],
     user: null
+}
+
+export function isTeam(item: unknown): item is ITeam {
+    if (typeof item !== 'object' || item === null) {
+        return false
+    }
+
+    return 'logo' in item
+        && 'name' in item
+        && 'country' in item
+        && 'id' in item
 }

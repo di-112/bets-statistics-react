@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@store/provider';
-import { IBet } from '@types'
+import { AppRoutes, IBet } from '../../../../types'
 import Statistic from '../Statistic';
 import Table from '../Table';
 import Toolbar from '../Toolbar';
@@ -17,7 +17,7 @@ const Content: FC = observer(() => {
 
     useEffect(() => {
         if (!isAuth) {
-            navigate('/auth')
+            navigate(AppRoutes.AUTH)
         }
     }, [isAuth])
 

@@ -5,8 +5,8 @@ import moment, { Moment } from 'moment';
 import api from '@api'
 import { DATE_FORMAT, LEAGUES } from '@enums'
 import {
-    IAnalytics, IBet, IErrorField, ITeam, IUser,
-} from '@types'
+    Columns, IAnalytics, IBet, IErrorField, ITeam, IUser,
+} from '../types'
 
 function autoSave(store) {
     let firstRun = true;
@@ -137,9 +137,18 @@ class Store {
         }]
     }
 
-    changeBet = <T extends keyof IBet>(key: number | string, field: T, data: IBet[T]): void => {
+    changeBet = <T extends keyof IBet>(
+        key: number | string,
+        field: T,
+        data: IBet[T],
+    ): void => {
         this.bets.find(bet => bet.key === key)[field] = data
     }
+
+    checkErrorCell = (
+        rowKey: IBet['key'],
+        column: keyof Columns,
+    ) => this.errorFields.find(item => item.key === rowKey)?.errors.includes(column)
 
     deleteBets = async (rows: IBet[]) => {
         const newRowsKey = rows.filter(row => row.isNew).map(({ key }) => key)

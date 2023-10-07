@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { Form as AntForm, FormItemProps } from 'antd'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Callbacks } from 'rc-field-form/lib/interface';
 import styles from './style.less';
 
 export type IField = (FormItemProps & { element: React.ReactNode })
 
-interface IForm<Values = any> {
+interface IForm<Values = unknown> {
     onFinish: Callbacks<Values>['onFinish'],
     fields: IField[],
     footer: React.ReactNode
